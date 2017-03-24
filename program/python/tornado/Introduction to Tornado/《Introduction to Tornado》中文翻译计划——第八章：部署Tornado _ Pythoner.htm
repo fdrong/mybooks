@@ -1,0 +1,1048 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0032)http://www.pythoner.com/303.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>《Introduction to Tornado》中文翻译计划——第八章：部署Tornado | Pythoner</title>
+<meta name="description" content="你像从前一样的Python学习笔记">
+
+<link rel="alternate" type="application/rss+xml" title="Pythoner RSS Feed" href="http://www.pythoner.com/feed">
+<link rel="alternate" type="application/atom+xml" title="Pythoner Atom Feed" href="http://www.pythoner.com/feed/atom"> 
+<link rel="pingback" href="http://www.pythoner.com/xmlrpc.php">
+
+<link rel="stylesheet" href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/style.css" type="text/css">
+<link rel="stylesheet" href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/comment-style.css" type="text/css">
+
+ 
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Pythoner » 《Introduction to Tornado》中文翻译计划——第八章：部署Tornado评论Feed" href="http://www.pythoner.com/303.html/feed">
+		<script type="text/javascript" async="" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.pythoner.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.1"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-son-of-obsidian-css" href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/son-of-obsidian.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/monaco.css" type="text/css" media="all">
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jquery.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/www.pythoner.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"\u70b9\u51fb\u5c55\u5f00\u4ee3\u7801"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/crayon.min.js"></script>
+<link rel="https://api.w.org/" href="http://www.pythoner.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.pythoner.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.pythoner.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="《Introduction to Tornado》中文翻译计划——第七章：外部服务认证" href="http://www.pythoner.com/302.html">
+<link rel="next" title="谈谈各网申系统的用户体验" href="http://www.pythoner.com/310.html">
+<meta name="generator" content="WordPress 4.6.1">
+<link rel="shortlink" href="http://www.pythoner.com/?p=303">
+<link rel="alternate" type="application/json+oembed" href="http://www.pythoner.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.pythoner.com%2F303.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.pythoner.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.pythoner.com%2F303.html&amp;format=xml">
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37612759-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "http://www.pythoner.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.6.1';
+	window._wp_rp_post_id = '303';
+	window._wp_rp_num_rel_posts = '5';
+	window._wp_rp_thumbnails = false;
+	window._wp_rp_post_title = '%E3%80%8AIntroduction+to+Tornado%E3%80%8B%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91%E8%AE%A1%E5%88%92%E2%80%94%E2%80%94%E7%AC%AC%E5%85%AB%E7%AB%A0%EF%BC%9A%E9%83%A8%E7%BD%B2Tornado';
+	window._wp_rp_post_tags = ['tornado', '%3F%3F', 'python', 'github', 'tornado', '80', 'pre', 'scheme', 'tornado', 'listen', 'max', 'root', 'server', 'static', 'locat', 'nginx', 'host', 'expir', 'user', 'introduct'];
+	window._wp_rp_promoted_content = true;
+</script>
+<style type="text/css">
+.related_post_title {
+  margin: 40px 0 10px !important;
+  color: #333 !important;
+}
+ul.related_post {
+}
+ul.related_post li {
+}
+ul.related_post li a {
+}
+ul.related_post li img {
+}</style>
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jscript.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/comment.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/rollover.js"></script>
+
+<!--[if IE 7]>
+<link rel="stylesheet" href="http://www.pythoner.com/wp-content/themes/flat/ie7.css" type="text/css" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" href="http://www.pythoner.com/wp-content/themes/flat/ie8.css" type="text/css" />
+<![endif]-->
+
+
+<style type="text/css">
+a, .post .title a:hover, .post_meta a:hover, #bread_crumb ul li a:hover, #previous_post a:hover, #next_post a:hover, .post a.more-link:hover, #right_col li a:hover, #copyright li a:hover, #archive_headline #keyword,
+   #comments_wrapper a:hover, #comment_header_right .comment_switch_active a, #comment_header_right .comment_switch_active a:hover, #comment_pager .current
+   { color:#00A19E; }
+
+#no_post a.back:hover, #wp-calendar td a:hover, #wp-calendar #prev a:hover, #wp-calendar #next a:hover, .page_navi a:hover, #submit_comment:hover
+ { background-color:#00A19E; }
+
+#guest_info input:focus, #comment_textarea textarea:focus
+ { border:1px solid #00A19E; }
+
+a:hover
+ { color:#BDC900; }
+
+body { font-size:13px; }
+
+
+
+</style>
+
+<link href="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/logger.js"></script></head>
+
+<body><iframe frameborder="0" style="display: none;" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/saved_resource.html"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/saved_resource(1).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/303.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/303.html#" class="goWebsite">百度分享</a></p></div></div></div><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/saved_resource(2).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/303.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/303.html#" class="goWebsite">百度分享</a></p></div></div></div><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/saved_resource(3).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/303.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/303.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/303.html#" class="goWebsite">百度分享</a></p></div></div></div>
+
+ <div id="header">
+  <div class="header_menu">
+    <ul id="menu-nav" class="menu"><li id="menu-item-29" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-29"><a href="http://www.pythoner.com/category/programming-language/python">Python</a></li>
+<li id="menu-item-28" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28"><a href="http://www.pythoner.com/category/note">读书笔记</a></li>
+<li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="http://www.pythoner.com/about">About</a></li>
+</ul>    </div>
+  <!-- logo -->
+  <h1 class="logo_text"><a href="http://www.pythoner.com/">Pythoner</a></h1>
+<h2 id="site_description">你像从前一样的Python学习笔记</h2>
+ </div>
+
+ <div id="main_content" class="clearfix">
+
+  <div id="left_col">
+      <div id="bread_crumb">
+    <ul class="clearfix">
+     <li id="bc_home"><a href="http://www.pythoner.com/" title="首页">首页</a></li>
+     <li id="bc_cat"><a href="http://www.pythoner.com/category/programming-language">编程语言</a><a href="http://www.pythoner.com/category/programming-language/python">python</a><a href="http://www.pythoner.com/category/programming-language/python/tornado">Tornado</a></li>     <li class="last">《Introduction to Tornado》中文翻译计划——第八章：部署Tornado</li>
+    </ul>
+   </div>
+   
+   
+   <div class="post_wrap clearfix" id="single">
+    <div class="post">
+     <h3 class="title"><span>《Introduction to Tornado》中文翻译计划——第八章：部署Tornado</span></h3>
+     <div class="post_content">
+      <div class="post_baidushare_up clearfix">
+       <!-- Baidu Button BEGIN -->
+       <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+       <a class="bds_tsina" title="分享到新浪微博" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_renren" title="分享到人人网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_tqq" title="分享到腾讯微博" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_qzone" title="分享到QQ空间" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_douban" title="分享到豆瓣网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_diandian" title="分享到点点网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_twi" title="分享到Twitter" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_fbook" title="分享到Facebook" href="http://www.pythoner.com/303.html#"></a>
+       <span class="bds_more">更多</span>
+       <a class="shareCount" href="http://www.pythoner.com/303.html#" title="累计分享0次">0</a>
+       </div>
+       <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1482744" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/bds_s_v2.js"></script>
+       
+       <script type="text/javascript">
+       document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+       </script>
+       <!-- Baidu Button END -->
+      </div>
+      <p>本文为《Introduction to Tornado》中文翻译，将在<a href="https://github.com/alioth310/itt2zh" title="Introduction  to Tornado 中文翻译" target="_blank">https://github.com/alioth310/itt2zh</a>上面持续更新，本文内容可能不是最新状态，请在GitHub上获得最新版本。</p>
+<p>本文也可在<a href="http://demo.pythoner.com/itt2zh">http://demo.pythoner.com/itt2zh</a>上进行格式化的预览。</p>
+<p><strong>第八章：部署Tornado</strong></p>
+<p>到目前为止，为了简单起见，在我们的例子中都是使用单一的Tornado进程运行的。这使得测试应用和快速变更非常简单，但是这不是一个合适的部署策略。部署一个应用到生产环境面临着新的挑战，既包括最优化性能，也包括管理独立进程。本章将介绍强化你的Tornado应用、增加请求吞吐量的策略，以及使得部署Tornado服务器更容易的工具。<br>
+<span id="more-303"></span></p>
+<h1>8.1 运行多个Tornado实例的原因</h1>
+<p>在大多数情况下，组合一个网页不是一个特别的计算密集型处理。服务器需要解析请求，取得适当的数据，以及将多个组件组装起来进行响应。如果你的应用使用阻塞的调用查询数据库或访问文件系统，那么服务器将不会在等待调用完成时响应传入的请求。在这些情况下，服务器硬件有剩余的CPU时间来等待I/O操作完成。</p>
+<p>鉴于响应一个HTTP请求的时间大部分都花费在CPU空闲状态下，我们希望利用这个停工时间，最大化给定时间内我们可以处理的请求数量。也就是说，我们希望服务器能够在处理已打开的请求等待数据的过程中接收尽可能多的新请求。</p>
+<p>正如我们在第五章讨论的异步HTTP请求中所看到的，Tornado的非阻塞架构在解决这类问题上大有帮助。回想一下，异步请求允许Tornado进程在等待出站请求返回时执行传入的请求。然而，我们碰到的问题是当同步函数调用块时。设想在一个Tornado执行的数据库查询或磁盘访问块中，进程不允许回应新的请求。这个问题最简单的解决方法是运行多个解释器的实例。通常情况下，你会使用一个反向代理，比如Nginx，来非配多个Tornado实例的加载。</p>
+<h1>8.2 使用Nginx作为反向代理</h1>
+<p>一个代理服务器是一台中转客户端资源请求到适当的服务器的机器。一些网络安装使用代理服务器过滤或缓存本地网络机器到Internet的HTTP请求。因为我们将运行一些在不同TCP端口上的Tornado实例，因此我们将使用反向代理服务器：客户端通过Internet连接一个反向代理服务器，然后反向代理服务器发送请求到代理后端的Tornado服务器池中的任何一个主机。代理服务器被设置为对客户端透明的，但它会向上游的Tornado节点传递一些有用信息，比如原始客户端IP地址和TCP格式。</p>
+<p>我们的服务器配置如图8-1所示。反向代理接收所有传入的HTTP请求，然后把它们分配给独立的Tornado实例。<br>
+<a href="http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1.jpg"><img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/Figure8-1-300x118.jpg" alt="Figure8-1" width="300" height="118" class="alignnone size-medium wp-image-304" srcset="http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1-300x118.jpg 300w, http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1.jpg 688w" sizes="(max-width: 300px) 100vw, 300px" data-lazy-loaded="true" style="display: inline;"><noscript>&lt;img src="http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1-300x118.jpg" alt="Figure8-1" width="300" height="118" class="alignnone size-medium wp-image-304" srcset="http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1-300x118.jpg 300w, http://www.pythoner.com/wp-content/uploads/2013/08/Figure8-1.jpg 688w" sizes="(max-width: 300px) 100vw, 300px" /&gt;</noscript></a><br>
+<em>图8-1 反向代理服务器后端的Tornado实例</em></p>
+<h2>8.2.1 Nginx基本配置</h2>
+<p>代码清单8-1中的列表是一个Nginx配置的示例。Nginx启动后监听来自80端口的连接，然后分配这些请求到配置文件中列出的上游主机。在这种情况下，我们假定上游主机监听来自他们自己的环回接口上的端口的连接。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2fad056bb819383039" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单8-1 一个简单的Nginx代理配置</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Apache</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">user nginx;
+worker_processes 5;
+
+error_log /var/log/nginx/error.log;
+
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+    use epoll;
+}
+
+proxy_next_upstream error;
+
+upstream tornadoes {
+    server 127.0.0.1:8000;
+    server 127.0.0.1:8001;
+    server 127.0.0.1:8002;
+    server 127.0.0.1:8003;
+}
+
+server {
+    listen 80;
+    server_name www.example.org *.example.org;
+
+    location /static/ {
+        root /var/www/static;
+        if ($query_string) {
+            expires max;
+        }
+    }
+
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://tornadoes;
+    }
+}</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-2">2</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-4">4</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-6">6</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-8">8</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-10">10</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-12">12</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-14">14</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-16">16</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-18">18</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-20">20</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-22">22</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-24">24</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-26">26</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-28">28</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-29">29</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-30">30</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-31">31</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-32">32</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-33">33</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-34">34</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-35">35</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-36">36</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-37">37</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-38">38</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-39">39</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056bb819383039-40">40</div><div class="crayon-num" data-line="crayon-57ee2fad056bb819383039-41">41</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2fad056bb819383039-1"><span class="crayon-r">user</span><span class="crayon-h"> </span><span class="crayon-i ">nginx</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-2"><span class="crayon-r">worker_processes</span><span class="crayon-h"> </span><span class="crayon-cn">5</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-4"><span class="crayon-r">error_log</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">log</span><span class="crayon-o">/</span><span class="crayon-i ">nginx</span><span class="crayon-o">/</span><span class="crayon-i ">error</span><span class="crayon-sy">.</span><span class="crayon-i ">log</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-6"><span class="crayon-r">pid</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">run</span><span class="crayon-o">/</span><span class="crayon-i ">nginx</span><span class="crayon-sy">.</span><span class="crayon-i ">pid</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-7">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-8"><span class="crayon-r">events</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-9"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;worker_connections</span><span class="crayon-h"> </span><span class="crayon-cn">1024</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-10"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;use</span><span class="crayon-h"> </span><span class="crayon-i ">epoll</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-11"><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-12">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-13"><span class="crayon-r">proxy_next_upstream</span><span class="crayon-h"> </span><span class="crayon-i ">error</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-14">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-15"><span class="crayon-r">upstream</span><span class="crayon-h"> </span><span class="crayon-i ">tornadoes</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-16"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server</span><span class="crayon-h"> </span><span class="crayon-cn">127.0.0.1</span><span class="crayon-o">:</span><span class="crayon-cn">8000</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-17"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server</span><span class="crayon-h"> </span><span class="crayon-cn">127.0.0.1</span><span class="crayon-o">:</span><span class="crayon-cn">8001</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-18"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server</span><span class="crayon-h"> </span><span class="crayon-cn">127.0.0.1</span><span class="crayon-o">:</span><span class="crayon-cn">8002</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-19"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server</span><span class="crayon-h"> </span><span class="crayon-cn">127.0.0.1</span><span class="crayon-o">:</span><span class="crayon-cn">8003</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-20"><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-21">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-22"><span class="crayon-r">server</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-23"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;listen</span><span class="crayon-h"> </span><span class="crayon-cn">80</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-24"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server_name</span><span class="crayon-h"> </span><span class="crayon-i ">www</span><span class="crayon-sy">.</span><span class="crayon-i ">example</span><span class="crayon-sy">.</span><span class="crayon-i ">org</span><span class="crayon-h"> </span><span class="crayon-o">*</span><span class="crayon-sy">.</span><span class="crayon-i ">example</span><span class="crayon-sy">.</span><span class="crayon-i ">org</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-25">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-26"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;location</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">static</span><span class="crayon-o">/</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-27"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">static</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-28"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$query_string</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-29"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires</span><span class="crayon-h"> </span><span class="crayon-i ">max</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-30"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-31"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-32">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-33"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;location</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-34"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass_header</span><span class="crayon-h"> </span><span class="crayon-i ">Server</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-35"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">Host</span><span class="crayon-h"> </span><span class="crayon-v">$http_host</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-36"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_redirect</span><span class="crayon-h"> </span><span class="crayon-i ">off</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-37"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">X-Real-IP</span><span class="crayon-h"> </span><span class="crayon-v">$remote_addr</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-38"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">X-Scheme</span><span class="crayon-h"> </span><span class="crayon-v">$scheme</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-39"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass</span><span class="crayon-h"> </span><span class="crayon-i ">http</span><span class="crayon-o">:</span><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-i ">tornadoes</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056bb819383039-40"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2fad056bb819383039-41"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0171 seconds] -->
+<p> </p>
+<p><a href="http://www.pythoner.com/wp-content/uploads/2013/07/warning.jpg"><img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://www.pythoner.com/wp-content/uploads/2013/07/warning.jpg" alt="warning" width="105" height="70" class="alignleft size-full wp-image-275"><noscript>&lt;img src="http://www.pythoner.com/wp-content/uploads/2013/07/warning.jpg" alt="warning" width="105" height="70" class="alignleft size-full wp-image-275" /&gt;</noscript></a>这个配置示例假定你的系统使用了epoll。在不同的UNIX发行版本中经常会有轻微的不同。一些系统可能使用了poll、/dev/poll或kqueue代替。</p>
+<p>按顺序来看匹配location /static/或location /的请求可能会很有帮助。Nginx把位于location指令中的字符串看作是一个以行起始锚点开始、任何字母重复结束的正则表达式。所以/被看作是表达式^/.*。当Nginx匹配这些字符串时，像/static这样更加特殊的字符串在像/这样的更加的通用的字符串之前被检查。Nginx文档中详细解释了匹配的顺序。</p>
+<p>除了一些标准样板外，这个配置文件最重要的部分是upstream指令和服务器配置中的proxy指令。Nginx服务器在80端口监听连接，然后分配这种请求给upstream服务器组中列出的Tornado实例。proxy_pass指令指定接收转发请求的服务器URI。你可以在proxy_pass URI中的主机部分引用upstream服务器组的名字。</p>
+<p>Nginx默认以循环的方式分配请求。此外，你也可以选择基于客户端的IP地址分配请求，这种情况下（除非连接中断）可以确保来自同一IP地址的请求总是被分配到同一个上游节点。你可以在<a href="http://wiki.nginx.org/HttpUpstreamModule" target="_blank">HTTPUpstreamModule文档</a>中了解更多关于这个选项的知识。</p>
+<p>还需要注意的是location /static/指令，它告诉Nginx直接提供静态目录的文件，而不再代理请求到Tornado。Nginx可以比Tornado更高效地提供静态文件，所以减少Tornado进程中不必要的加载是非常有意义的。</p>
+<h2>8.2.2 Nginx的SSL解密</h2>
+<p>应用的开发者在浏览器和客户端之间传输个人信息时需要特别注意保护信息不要落入坏人之手。在不安全的WiFi接入中，用户很容易受到cookie劫持攻击，从而威胁他们在流行的社交网站上的账户。对此，大部分主要的社交网络应用都默认或作为用户可配置选项使用安全协议。同时，我们使用Nginx解密传入的SSL加密请求，然后把解码后的HTTP请求分配给上游服务器。</p>
+<p>代码清单8-2展示了一个用于解密传入的HTTPS请求的server块，并使用代码清单8-1中我们使用过的代理指令转发解密后的通信。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2fad056db427235952" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单8-2 使用SSL的server块</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Apache</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">server {
+    listen 443;
+    ssl on;
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/cert.key;
+
+    default_type application/octet-stream;
+
+    location /static/ {
+        root /var/www/static;
+        if ($query_string) {
+            expires max;
+        }
+    }
+
+    location = /favicon.ico {
+        rewrite (.*) /static/favicon.ico;
+    }
+
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://tornadoes;
+    }
+}</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-2">2</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-4">4</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-6">6</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-8">8</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-10">10</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-12">12</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-14">14</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-16">16</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-18">18</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-20">20</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-22">22</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-24">24</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-26">26</div><div class="crayon-num" data-line="crayon-57ee2fad056db427235952-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056db427235952-28">28</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2fad056db427235952-1"><span class="crayon-r">server</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-2"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;listen</span><span class="crayon-h"> </span><span class="crayon-cn">443</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-3"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;ssl</span><span class="crayon-h"> </span><span class="crayon-i ">on</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-4"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;ssl_certificate</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">path</span><span class="crayon-o">/</span><span class="crayon-i ">to</span><span class="crayon-o">/</span><span class="crayon-i ">cert</span><span class="crayon-sy">.</span><span class="crayon-i ">pem</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-5"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;ssl_certificate_key</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">path</span><span class="crayon-o">/</span><span class="crayon-i ">to</span><span class="crayon-o">/</span><span class="crayon-i ">cert</span><span class="crayon-sy">.</span><span class="crayon-i ">key</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-6">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056db427235952-7"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;default_type</span><span class="crayon-h"> </span><span class="crayon-i ">application</span><span class="crayon-o">/</span><span class="crayon-i ">octet-stream</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-8">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056db427235952-9"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;location</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">static</span><span class="crayon-o">/</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-10"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">static</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-11"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$query_string</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-12"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires</span><span class="crayon-h"> </span><span class="crayon-i ">max</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-13"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-15">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-16"><span class="crayon-v">&nbsp;&nbsp;&nbsp;&nbsp;location</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">favicon</span><span class="crayon-sy">.</span><span class="crayon-i ">ico</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-17"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rewrite</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">.</span><span class="crayon-o">*</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">static</span><span class="crayon-o">/</span><span class="crayon-i ">favicon</span><span class="crayon-sy">.</span><span class="crayon-i ">ico</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-19">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-20"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;location</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-21"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass_header</span><span class="crayon-h"> </span><span class="crayon-i ">Server</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-22"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">Host</span><span class="crayon-h"> </span><span class="crayon-v">$http_host</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-23"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_redirect</span><span class="crayon-h"> </span><span class="crayon-i ">off</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-24"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">X-Real-IP</span><span class="crayon-h"> </span><span class="crayon-v">$remote_addr</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-25"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_set_header</span><span class="crayon-h"> </span><span class="crayon-i ">X-Scheme</span><span class="crayon-h"> </span><span class="crayon-v">$scheme</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-26"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy_pass</span><span class="crayon-h"> </span><span class="crayon-i ">http</span><span class="crayon-o">:</span><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-i ">tornadoes</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056db427235952-27"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056db427235952-28"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0117 seconds] -->
+<p> </p>
+<p>这段代码和上面的配置非常相似，除了Nginx将在标准HTTPS的443端口监听安全Web请求外。如果你想强制使用SSL连接，你可以在server块中包含一个rewrite指令来监听80端口的HTTP连接。代码清单8-3是这种重定向的一个例子。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2fad056eb373179892" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单8-3 用于重定向HTTP请求到安全渠道的server块</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Apache</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">server {
+    listen 80;
+    server_name example.com;
+
+    rewrite /(.*) https://$http_host/$1 redirect;
+}</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2fad056eb373179892-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056eb373179892-2">2</div><div class="crayon-num" data-line="crayon-57ee2fad056eb373179892-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056eb373179892-4">4</div><div class="crayon-num" data-line="crayon-57ee2fad056eb373179892-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056eb373179892-6">6</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2fad056eb373179892-1"><span class="crayon-r">server</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056eb373179892-2"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;listen</span><span class="crayon-h"> </span><span class="crayon-cn">80</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2fad056eb373179892-3"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;server_name</span><span class="crayon-h"> </span><span class="crayon-i ">example</span><span class="crayon-sy">.</span><span class="crayon-i ">com</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056eb373179892-4">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056eb373179892-5"><span class="crayon-r">&nbsp;&nbsp;&nbsp;&nbsp;rewrite</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-sy">(</span><span class="crayon-sy">.</span><span class="crayon-o">*</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i ">https</span><span class="crayon-o">:</span><span class="crayon-o">/</span><span class="crayon-o">/</span><span class="crayon-v">$http_host</span><span class="crayon-o">/</span><span class="crayon-v">$1</span><span class="crayon-h"> </span><span class="crayon-i ">redirect</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056eb373179892-6"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0015 seconds] -->
+<p> </p>
+<p>Nginx是一个非常鲁棒的工具，我们在这里仅仅接触到帮助Tornado部署的一些简单的配置选项。Nginx的<a href="http://wiki.nginx.org/" target="_blank">wiki文档</a>是获得安装和配置这个强有力的工具额外信息的一个非常好的资源。</p>
+<h1>8.3 使用Supervisor监控Tornado进程</h1>
+<p>正如8.2节中埋下的伏笔，我们将在我们的Tornado应用中运行多个实例以充分利用现代的多处理器和多核服务器架构。开发团队大多传闻每个核运行一个Tornado进程。但是，正如我们所知道的，大量的传闻并不代表事实，所以你的结果可能不同。在本节中，我们将讨论在UNIX系统中管理多个Tornado实例的策略。</p>
+<p>到目前为止，我们都是在命令行中运行Tornado服务器的，就像$ python main.py –port=8000。但是，再擦河南刮起的生产部署中，这是不可管理的。因为我们为每个CPU核心运行一个独立的Tornado进程，因此有很多进程需要监控和控制。supervisor守护进程可以帮助我们完成这个任务。</p>
+<p>Supervisor的设计是每次开机时启动其配置文件中列出的进程。这里，我们将看到管理我们在Nginx配置文件中作为上游主机提到的四个Tornado实例的Supervisor配置。典型的supervisord.conf文件中包含了全局的配置指令，并加载conf.d目录下的其他配置文件。代码清单8-4展示了我们想启动的Tornado进程的配置文件。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2fad056f4551263077" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单8-4 tornado.conf</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Apache</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">[group:tornadoes]
+programs=tornado-8000,tornado-8001,tornado-8002,tornado-8003
+
+[program:tornado-8000]
+command=python /var/www/main.py --port=8000
+directory=/var/www
+user=www-data
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/tornado.log
+loglevel=info
+
+[program:tornado-8001]
+command=python /var/www/main.py --port=8001
+directory=/var/www
+user=www-data
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/tornado.log
+loglevel=info
+
+[program:tornado-8002]
+command=python /var/www/main.py --port=8002
+directory=/var/www
+user=www-data
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/tornado.log
+loglevel=info
+
+[program:tornado-8003]
+command=python /var/www/main.py --port=8003
+directory=/var/www
+user=www-data
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/tornado.log
+loglevel=info</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-2">2</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-4">4</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-6">6</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-8">8</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-10">10</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-12">12</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-14">14</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-16">16</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-18">18</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-20">20</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-22">22</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-24">24</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-26">26</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-28">28</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-29">29</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-30">30</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-31">31</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-32">32</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-33">33</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-34">34</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-35">35</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-36">36</div><div class="crayon-num" data-line="crayon-57ee2fad056f4551263077-37">37</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad056f4551263077-38">38</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2fad056f4551263077-1"><span class="crayon-cn ">[group:tornadoes]</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-2"><span class="crayon-v">programs</span><span class="crayon-o">=</span><span class="crayon-i ">tornado-8000</span><span class="crayon-sy">,</span><span class="crayon-i ">tornado-8001</span><span class="crayon-sy">,</span><span class="crayon-i ">tornado-8002</span><span class="crayon-sy">,</span><span class="crayon-i ">tornado-8003</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-4"><span class="crayon-cn ">[program:tornado-8000]</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-5"><span class="crayon-v">command</span><span class="crayon-o">=</span><span class="crayon-i ">python</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">main</span><span class="crayon-sy">.</span><span class="crayon-i ">py</span><span class="crayon-h"> </span><span class="crayon-i ">--port</span><span class="crayon-o">=</span><span class="crayon-cn">8000</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-6"><span class="crayon-v">directory</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-7"><span class="crayon-v">user</span><span class="crayon-o">=</span><span class="crayon-i ">www-data</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-8"><span class="crayon-v">autorestart</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-9"><span class="crayon-v">redirect_stderr</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-10"><span class="crayon-v">stdout_logfile</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">log</span><span class="crayon-o">/</span><span class="crayon-i ">tornado</span><span class="crayon-sy">.</span><span class="crayon-i ">log</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-11"><span class="crayon-v">loglevel</span><span class="crayon-o">=</span><span class="crayon-i ">info</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-12">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-13"><span class="crayon-cn ">[program:tornado-8001]</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-14"><span class="crayon-v">command</span><span class="crayon-o">=</span><span class="crayon-i ">python</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">main</span><span class="crayon-sy">.</span><span class="crayon-i ">py</span><span class="crayon-h"> </span><span class="crayon-i ">--port</span><span class="crayon-o">=</span><span class="crayon-cn">8001</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-15"><span class="crayon-v">directory</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-16"><span class="crayon-v">user</span><span class="crayon-o">=</span><span class="crayon-i ">www-data</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-17"><span class="crayon-v">autorestart</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-18"><span class="crayon-v">redirect_stderr</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-19"><span class="crayon-v">stdout_logfile</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">log</span><span class="crayon-o">/</span><span class="crayon-i ">tornado</span><span class="crayon-sy">.</span><span class="crayon-i ">log</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-20"><span class="crayon-v">loglevel</span><span class="crayon-o">=</span><span class="crayon-i ">info</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-21">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-22"><span class="crayon-cn ">[program:tornado-8002]</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-23"><span class="crayon-v">command</span><span class="crayon-o">=</span><span class="crayon-i ">python</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">main</span><span class="crayon-sy">.</span><span class="crayon-i ">py</span><span class="crayon-h"> </span><span class="crayon-i ">--port</span><span class="crayon-o">=</span><span class="crayon-cn">8002</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-24"><span class="crayon-v">directory</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-25"><span class="crayon-v">user</span><span class="crayon-o">=</span><span class="crayon-i ">www-data</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-26"><span class="crayon-v">autorestart</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-27"><span class="crayon-v">redirect_stderr</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-28"><span class="crayon-v">stdout_logfile</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">log</span><span class="crayon-o">/</span><span class="crayon-i ">tornado</span><span class="crayon-sy">.</span><span class="crayon-i ">log</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-29"><span class="crayon-v">loglevel</span><span class="crayon-o">=</span><span class="crayon-i ">info</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-30">&nbsp;</div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-31"><span class="crayon-cn ">[program:tornado-8003]</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-32"><span class="crayon-v">command</span><span class="crayon-o">=</span><span class="crayon-i ">python</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span><span class="crayon-o">/</span><span class="crayon-i ">main</span><span class="crayon-sy">.</span><span class="crayon-i ">py</span><span class="crayon-h"> </span><span class="crayon-i ">--port</span><span class="crayon-o">=</span><span class="crayon-cn">8003</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-33"><span class="crayon-v">directory</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">www</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-34"><span class="crayon-v">user</span><span class="crayon-o">=</span><span class="crayon-i ">www-data</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-35"><span class="crayon-v">autorestart</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-36"><span class="crayon-v">redirect_stderr</span><span class="crayon-o">=</span><span class="crayon-i ">true</span></div><div class="crayon-line" id="crayon-57ee2fad056f4551263077-37"><span class="crayon-v">stdout_logfile</span><span class="crayon-o">=</span><span class="crayon-o">/</span><span class="crayon-i ">var</span><span class="crayon-o">/</span><span class="crayon-i ">log</span><span class="crayon-o">/</span><span class="crayon-i ">tornado</span><span class="crayon-sy">.</span><span class="crayon-i ">log</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad056f4551263077-38"><span class="crayon-v">loglevel</span><span class="crayon-o">=</span><span class="crayon-i ">info</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0319 seconds] -->
+<p> </p>
+<p>为了Supervisor有意义，你需要至少包含一个program部分。在代码清单8-4中，我们定义了四个程序，分别命名为tornado-8000到tornado-8003。program部分定义了Supervisor将要运行的每个命令的参数。command的值是必须的，通常是带有我们希望监听的port参数的Tornado应用。我们还为每个程序的工作目录、有效用户和日志文件定义了额外的设置；而把autorestart和redirect_stderr设置为true是非常有用的。</p>
+<p>为了一起管理所有的Tornado进程，创建一个组是很有必要的。在这个例子的顶部，我们声明了一个叫作tornadoes的组，并在其中列出了每个程序。现在，当我们想要管理我们的Tornado应用时，我们可以通过带有通配符的组名引用所有的组成程序。比如，要重启应用时，我们只需要在supervisorctl工具中使用命令restart tornadoes:*。</p>
+<p>一旦你安装和配置好Supervisor，你就可以使用supervisorctl来管理supervisord进程。为了启动你的Web应用，你可以让Supervisor重新读取配置，然后任何配置改变的程序或程序组将被重启。你同样可以手动启动、停止和重启被管理的程序或检查整个系统的状态。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2fad05705394027322" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">supervisor&gt; update
+tornadoes: stopped
+tornadoes: updated process group
+supervisor&gt; status
+tornadoes:tornado-8000 RUNNING pid 32091, uptime 00:00:02
+tornadoes:tornado-8001 RUNNING pid 32092, uptime 00:00:02
+tornadoes:tornado-8002 RUNNING pid 32093, uptime 00:00:02
+tornadoes:tornado-8003 RUNNING pid 32094, uptime 00:00:02</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2fad05705394027322-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad05705394027322-2">2</div><div class="crayon-num" data-line="crayon-57ee2fad05705394027322-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad05705394027322-4">4</div><div class="crayon-num" data-line="crayon-57ee2fad05705394027322-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad05705394027322-6">6</div><div class="crayon-num" data-line="crayon-57ee2fad05705394027322-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2fad05705394027322-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2fad05705394027322-1"><span class="crayon-v">supervisor</span><span class="crayon-o">&gt;</span><span class="crayon-h"> </span><span class="crayon-e">update</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad05705394027322-2"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">stopped</span></div><div class="crayon-line" id="crayon-57ee2fad05705394027322-3"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">updated </span><span class="crayon-e">process </span><span class="crayon-e">group</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad05705394027322-4"><span class="crayon-v">supervisor</span><span class="crayon-o">&gt;</span><span class="crayon-h"> </span><span class="crayon-e">status</span></div><div class="crayon-line" id="crayon-57ee2fad05705394027322-5"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-v">tornado</span><span class="crayon-o">-</span><span class="crayon-cn">8000</span><span class="crayon-h"> </span><span class="crayon-e">RUNNING </span><span class="crayon-i">pid</span><span class="crayon-h"> </span><span class="crayon-cn">32091</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">uptime</span><span class="crayon-h"> </span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">02</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad05705394027322-6"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-v">tornado</span><span class="crayon-o">-</span><span class="crayon-cn">8001</span><span class="crayon-h"> </span><span class="crayon-e">RUNNING </span><span class="crayon-i">pid</span><span class="crayon-h"> </span><span class="crayon-cn">32092</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">uptime</span><span class="crayon-h"> </span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">02</span></div><div class="crayon-line" id="crayon-57ee2fad05705394027322-7"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-v">tornado</span><span class="crayon-o">-</span><span class="crayon-cn">8002</span><span class="crayon-h"> </span><span class="crayon-e">RUNNING </span><span class="crayon-i">pid</span><span class="crayon-h"> </span><span class="crayon-cn">32093</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">uptime</span><span class="crayon-h"> </span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">02</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2fad05705394027322-8"><span class="crayon-v">tornadoes</span><span class="crayon-o">:</span><span class="crayon-v">tornado</span><span class="crayon-o">-</span><span class="crayon-cn">8003</span><span class="crayon-h"> </span><span class="crayon-e">RUNNING </span><span class="crayon-i">pid</span><span class="crayon-h"> </span><span class="crayon-cn">32094</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">uptime</span><span class="crayon-h"> </span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">00</span><span class="crayon-o">:</span><span class="crayon-cn">02</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0036 seconds] -->
+<p> </p>
+<p>Supervisor和你系统的初始化进程一起工作，并且它应该在系统启动时自动注册守护进程。当supervisor启动后，程序组会自动在线。默认情况下，Supervisor会监控子进程，并在任何程序意外终止时重生。如果你想不管错误码，重启被管理的进程，你可以设置autorestart为true。</p>
+<p>Supervisor不只可以使管理多个Tornado实例更容易，还能让你在Tornado服务器遇到意外的服务中断后重新上线时泰然处之。</p>
+<p>========================================================<br>
+<strong>各章链接：</strong><br>
+<a href="http://www.pythoner.com/273.html" title="《Introduction to Tornado》中文翻译计划——第一章：引言" target="_blank">《Introduction to Tornado》中文翻译计划——第一章：引言</a><br>
+<a href="http://www.pythoner.com/274.html" title="《Introduction to Tornado》中文翻译计划——第二章：表单和模板" target="_blank">《Introduction to Tornado》中文翻译计划——第二章：表单和模板</a><br>
+<a href="http://www.pythoner.com/282.html" title="《Introduction to Tornado》中文翻译计划——第三章：模板扩展" target="_blank">《Introduction to Tornado》中文翻译计划——第三章：模板扩展</a><br>
+<a href="http://www.pythoner.com/283.html" title="《Introduction to Tornado》中文翻译计划——第四章：数据库" target="_blank">《Introduction to Tornado》中文翻译计划——第四章：数据库</a><br>
+<a href="http://www.pythoner.com/294.html" title="《Introduction to Tornado》中文翻译计划——第五章：异步Web服务" target="_blank">《Introduction to Tornado》中文翻译计划——第五章：异步Web服务</a><br>
+<a href="http://www.pythoner.com/295.html" title="《Introduction to Tornado》中文翻译计划——第六章：编写安全应用" target="_blank">《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</a><br>
+<a href="http://www.pythoner.com/302.html" title="《Introduction to Tornado》中文翻译计划——第七章：外部服务认证" target="_blank">《Introduction to Tornado》中文翻译计划——第七章：外部服务认证</a><br>
+<a href="http://www.pythoner.com/303.html" title="《Introduction to Tornado》中文翻译计划——第八章：部署Tornado" target="_blank">《Introduction to Tornado》中文翻译计划——第八章：部署Tornado</a>
+</p><div class="post_copyright">
+<p>本文内容遵从<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC3.0版权协议</a>，转载请注明：转自<a href="http://www.pythoner.com/">Pythoner</a></p>
+<p>本文链接地址：<a href="http://www.pythoner.com/303.html">《Introduction to Tornado》中文翻译计划——第八章：部署Tornado</a></p>
+</div>
+
+<div class="wp_rp_wrap  wp_rp_plain" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-416" data-post-type="none"><a href="http://www.pythoner.com/416.html" class="wp_rp_title">【漏洞预警】Tornado某缺陷可能造成文件读取漏洞 （updated @ 2015-03-04）</a></li><li data-position="1" data-poid="in-283" data-post-type="none"><a href="http://www.pythoner.com/283.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第四章：数据库</a></li><li data-position="2" data-poid="in-282" data-post-type="none"><a href="http://www.pythoner.com/282.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第三章：模板扩展</a></li><li data-position="3" data-poid="in-294" data-post-type="none"><a href="http://www.pythoner.com/294.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第五章：异步Web服务</a></li><li data-position="4" data-poid="in-295" data-post-type="none"><a href="http://www.pythoner.com/295.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</a></li></ul><div class="wp_rp_footer"><a class="wp_rp_backlink" target="_blank" href="http://www.zemanta.com/?wp-related-posts" rel="nofollow">Zemanta</a></div></div></div>
+            <div class="post_baidushare_down clearfix">
+       <!-- Baidu Button BEGIN -->
+       <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+       <a class="bds_tsina" title="分享到新浪微博" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_renren" title="分享到人人网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_tqq" title="分享到腾讯微博" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_qzone" title="分享到QQ空间" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_douban" title="分享到豆瓣网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_diandian" title="分享到点点网" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_twi" title="分享到Twitter" href="http://www.pythoner.com/303.html#"></a>
+       <a class="bds_fbook" title="分享到Facebook" href="http://www.pythoner.com/303.html#"></a>
+       <span class="bds_more"></span>
+       <a class="shareCount" href="http://www.pythoner.com/303.html#" title="累计分享0次">0</a>
+       </div>
+       <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1482744"></script>
+       
+       <script type="text/javascript">
+       document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+       </script>
+       <!-- Baidu Button END -->
+       </div>
+     </div><!-- END .post_content -->
+    </div>
+    <div class="meta">
+          <ul>
+            <li class="post_date clearfix">
+       <span class="date">05</span>
+       <span class="month">Aug</span>
+       <span class="year">2013</span>
+      </li>
+            <li class="post_author"><a href="http://www.pythoner.com/author/alioth310" title="由alioth310发布" rel="author">alioth310</a></li>      <li class="post_category"><a href="http://www.pythoner.com/category/programming-language/python/tornado" rel="category tag">Tornado</a></li>      <li class="post_tag"><a href="http://www.pythoner.com/tag/github" rel="tag">GitHub</a>, <a href="http://www.pythoner.com/tag/python" rel="tag">python</a>, <a href="http://www.pythoner.com/tag/tornado" rel="tag">Tornado</a>, <a href="http://www.pythoner.com/tag/%e7%bf%bb%e8%af%91" rel="tag">翻译</a></li>      <li class="post_views"> 2,207 次围观</li>      <li class="post_comment"><a href="http://www.pythoner.com/303.html#comments">5 comments</a></li>            <li class="post_qrcode"><img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/chart" title="获取本文二维码：《Introduction to Tornado》中文翻译计划——第八章：部署Tornado"></li>
+     </ul>
+         </div>
+   </div><!-- END .post_wrap -->
+
+   
+      <div id="comments_wrapper">
+    
+
+
+
+<div id="comment_header" class="clearfix">
+
+ <ul id="comment_header_left">
+  <li id="add_comment"><a href="http://www.pythoner.com/303.html#respond">发表评论</a></li>
+  <li id="comment_feed"><a href="http://www.pythoner.com/comments/feed" title="RSS订阅评论">RSS订阅评论</a></li>
+ </ul>
+
+ <ul id="comment_header_right">
+   <li id="trackback_switch"><a href="javascript:void(0);">Trackback ( 0 )</a></li>
+   <li id="comment_switch" class="comment_switch_active"><a href="javascript:void(0);">评论 ( 5 )</a></li>
+ </ul>
+
+
+
+</div><!-- END #comment_header -->
+
+<div id="comments">
+
+ <div id="comment_area">
+  <!-- start commnet -->
+  <ol class="commentlist">
+	
+ <li class="comment guest-comment even_comment" id="comment-2264">
+  <div class="comment-meta">
+   <div class="comment-meta-left">
+  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://0.gravatar.com/avatar/3d6336a5dfc2c09aa126832e8181fce2?s=35&amp;d=mm&amp;r=g" alt="" srcset="http://0.gravatar.com/avatar/3d6336a5dfc2c09aa126832e8181fce2?s=70&amp;d=mm&amp;r=g 2x" class="avatar avatar-35 photo" height="35" width="35"><noscript>&lt;img alt='' src='http://0.gravatar.com/avatar/3d6336a5dfc2c09aa126832e8181fce2?s=35&amp;#038;d=mm&amp;#038;r=g' srcset='http://0.gravatar.com/avatar/3d6336a5dfc2c09aa126832e8181fce2?s=70&amp;amp;d=mm&amp;amp;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' /&gt;</noscript>  
+    <ul class="comment-name-date">
+     <li class="comment-name">
+<a id="commentauthor-2264" class="url guest-url" href="http://hellove.net/" rel="external nofollow">
+
+hellove
+</a>
+     </li>
+     <li class="comment-date">2013/08/10 6:10下午</li>
+    </ul>
+   </div>
+
+   <ul class="comment-act">
+    <li class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="http://www.pythoner.com/303.html?replytocom=2264#respond" onclick="return addComment.moveForm( &quot;comment-content-2264&quot;, &quot;2264&quot;, &quot;respond&quot;, &quot;303&quot; )" aria-label="回复给hellove"><span><span>回复</span></span></a></li>
+    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote(&#39;commentauthor-2264&#39;, &#39;comment-2264&#39;, &#39;comment-content-2264&#39;, &#39;comment&#39;);">引用</a></li>
+       </ul>
+
+  </div>
+  <div class="comment-content" id="comment-content-2264">
+    <p>博主，你真的很了不起  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/good.gif" alt="[em_zan]" class="wp-smiley" style="height: 1em; max-height: 1em;"></p>
+  </div>
+
+</li><!-- #comment-## -->
+
+ <li class="comment guest-comment odd_comment" id="comment-6182">
+  <div class="comment-meta">
+   <div class="comment-meta-left">
+  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://1.gravatar.com/avatar/7f906f3e4088f5272cd74adc81827fe4?s=35&amp;d=mm&amp;r=g" alt="" srcset="http://1.gravatar.com/avatar/7f906f3e4088f5272cd74adc81827fe4?s=70&amp;d=mm&amp;r=g 2x" class="avatar avatar-35 photo" height="35" width="35"><noscript>&lt;img alt='' src='http://1.gravatar.com/avatar/7f906f3e4088f5272cd74adc81827fe4?s=35&amp;#038;d=mm&amp;#038;r=g' srcset='http://1.gravatar.com/avatar/7f906f3e4088f5272cd74adc81827fe4?s=70&amp;amp;d=mm&amp;amp;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' /&gt;</noscript>  
+    <ul class="comment-name-date">
+     <li class="comment-name">
+<a id="commentauthor-6182" class="url guest-url" href="http://addbook.cn/" rel="external nofollow">
+
+lin
+</a>
+     </li>
+     <li class="comment-date">2014/01/04 10:35下午</li>
+    </ul>
+   </div>
+
+   <ul class="comment-act">
+    <li class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="http://www.pythoner.com/303.html?replytocom=6182#respond" onclick="return addComment.moveForm( &quot;comment-content-6182&quot;, &quot;6182&quot;, &quot;respond&quot;, &quot;303&quot; )" aria-label="回复给lin"><span><span>回复</span></span></a></li>
+    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote(&#39;commentauthor-6182&#39;, &#39;comment-6182&#39;, &#39;comment-content-6182&#39;, &#39;comment&#39;);">引用</a></li>
+       </ul>
+
+  </div>
+  <div class="comment-content" id="comment-content-6182">
+    <p>非常感谢你的翻译，非常有用</p>
+  </div>
+
+</li><!-- #comment-## -->
+
+ <li class="comment guest-comment even_comment" id="comment-6216">
+  <div class="comment-meta">
+   <div class="comment-meta-left">
+  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://0.gravatar.com/avatar/f32cce49fc46c0f429947fce285dc8dc?s=35&amp;d=mm&amp;r=g" alt="" srcset="http://0.gravatar.com/avatar/f32cce49fc46c0f429947fce285dc8dc?s=70&amp;d=mm&amp;r=g 2x" class="avatar avatar-35 photo" height="35" width="35"><noscript>&lt;img alt='' src='http://0.gravatar.com/avatar/f32cce49fc46c0f429947fce285dc8dc?s=35&amp;#038;d=mm&amp;#038;r=g' srcset='http://0.gravatar.com/avatar/f32cce49fc46c0f429947fce285dc8dc?s=70&amp;amp;d=mm&amp;amp;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' /&gt;</noscript>  
+    <ul class="comment-name-date">
+     <li class="comment-name">
+<a id="commentauthor-6216" class="url guest-url" href="http://todototry.github.io/" rel="external nofollow">
+
+todototry
+</a>
+     </li>
+     <li class="comment-date">2014/01/09 6:03下午</li>
+    </ul>
+   </div>
+
+   <ul class="comment-act">
+    <li class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="http://www.pythoner.com/303.html?replytocom=6216#respond" onclick="return addComment.moveForm( &quot;comment-content-6216&quot;, &quot;6216&quot;, &quot;respond&quot;, &quot;303&quot; )" aria-label="回复给todototry"><span><span>回复</span></span></a></li>
+    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote(&#39;commentauthor-6216&#39;, &#39;comment-6216&#39;, &#39;comment-content-6216&#39;, &#39;comment&#39;);">引用</a></li>
+       </ul>
+
+  </div>
+  <div class="comment-content" id="comment-content-6216">
+    <p>博主对python技术有着难以抑制的热情啊</p>
+  </div>
+
+</li><!-- #comment-## -->
+
+ <li class="comment guest-comment odd_comment" id="comment-25854">
+  <div class="comment-meta">
+   <div class="comment-meta-left">
+  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://1.gravatar.com/avatar/d4ba6a6bdfcec3f8660acac5e38be2ec?s=35&amp;d=mm&amp;r=g" alt="" srcset="http://1.gravatar.com/avatar/d4ba6a6bdfcec3f8660acac5e38be2ec?s=70&amp;d=mm&amp;r=g 2x" class="avatar avatar-35 photo" height="35" width="35"><noscript>&lt;img alt='' src='http://1.gravatar.com/avatar/d4ba6a6bdfcec3f8660acac5e38be2ec?s=35&amp;#038;d=mm&amp;#038;r=g' srcset='http://1.gravatar.com/avatar/d4ba6a6bdfcec3f8660acac5e38be2ec?s=70&amp;amp;d=mm&amp;amp;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' /&gt;</noscript>  
+    <ul class="comment-name-date">
+     <li class="comment-name">
+<span id="commentauthor-25854">
+
+bean
+</span>
+     </li>
+     <li class="comment-date">2014/11/17 3:01下午</li>
+    </ul>
+   </div>
+
+   <ul class="comment-act">
+    <li class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="http://www.pythoner.com/303.html?replytocom=25854#respond" onclick="return addComment.moveForm( &quot;comment-content-25854&quot;, &quot;25854&quot;, &quot;respond&quot;, &quot;303&quot; )" aria-label="回复给bean"><span><span>回复</span></span></a></li>
+    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote(&#39;commentauthor-25854&#39;, &#39;comment-25854&#39;, &#39;comment-content-25854&#39;, &#39;comment&#39;);">引用</a></li>
+       </ul>
+
+  </div>
+  <div class="comment-content" id="comment-content-25854">
+    <p>每一章都仔细看完了,非常感谢</p>
+  </div>
+
+</li><!-- #comment-## -->
+
+ <li class="comment guest-comment even_comment" id="comment-37711">
+  <div class="comment-meta">
+   <div class="comment-meta-left">
+  <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/1x1.trans.gif" data-lazy-src="http://0.gravatar.com/avatar/38bb186124a1601c68232ec96deff5f2?s=35&amp;d=mm&amp;r=g" alt="" srcset="http://0.gravatar.com/avatar/38bb186124a1601c68232ec96deff5f2?s=70&amp;d=mm&amp;r=g 2x" class="avatar avatar-35 photo" height="35" width="35"><noscript>&lt;img alt='' src='http://0.gravatar.com/avatar/38bb186124a1601c68232ec96deff5f2?s=35&amp;#038;d=mm&amp;#038;r=g' srcset='http://0.gravatar.com/avatar/38bb186124a1601c68232ec96deff5f2?s=70&amp;amp;d=mm&amp;amp;r=g 2x' class='avatar avatar-35 photo' height='35' width='35' /&gt;</noscript>  
+    <ul class="comment-name-date">
+     <li class="comment-name">
+<span id="commentauthor-37711">
+
+hehe
+</span>
+     </li>
+     <li class="comment-date">2015/08/28 7:01上午</li>
+    </ul>
+   </div>
+
+   <ul class="comment-act">
+    <li class="comment-reply"><a rel="nofollow" class="comment-reply-link" href="http://www.pythoner.com/303.html?replytocom=37711#respond" onclick="return addComment.moveForm( &quot;comment-content-37711&quot;, &quot;37711&quot;, &quot;respond&quot;, &quot;303&quot; )" aria-label="回复给hehe"><span><span>回复</span></span></a></li>
+    <li class="comment-quote"><a href="javascript:void(0);" onclick="MGJS_CMT.quote(&#39;commentauthor-37711&#39;, &#39;comment-37711&#39;, &#39;comment-content-37711&#39;, &#39;comment&#39;);">引用</a></li>
+       </ul>
+
+  </div>
+  <div class="comment-content" id="comment-content-37711">
+    <p>非常感谢博主，默默地付出并享受过程，这就是爱。</p>
+  </div>
+
+</li><!-- #comment-## -->
+  </ol>
+  <!-- comments END -->
+
+  
+ </div><!-- #comment-list END -->
+
+
+ <div id="trackback_area">
+ <!-- start trackback -->
+ 
+  <div id="trackback_url_wrapper">
+   <label for="trackback_url">TrackBack 地址</label>
+   <input type="text" name="trackback_url" id="trackback_url" size="60" value="http://www.pythoner.com/303.html/trackback" readonly="readonly" onfocus="this.select()">
+  </div>
+
+  <ol class="commentlist">
+      <li class="comment"><div class="comment-content"><p>暂无 Trackback</p></div></li>
+     </ol>
+
+  <!-- trackback end -->
+ </div><!-- #trackbacklist END -->
+
+ 
+
+
+ 
+ <fieldset class="comment_form_wrapper" id="respond">
+
+    <div id="cancel_comment_reply"><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.pythoner.com/303.html#respond" style="display:none;">点击这里取消回复。</a></div>
+  
+  <form action="http://www.pythoner.com/wp-comments-post.php" method="post" id="commentform">
+
+   
+   <div id="guest_info">
+    <div id="guest_name"><label for="author"><span>昵称</span>( 必须 )</label><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required="true"></div>
+    <div id="guest_email"><label for="email"><span>E-MAIL</span>( 必须 ) - 不会公开 -</label><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required="true"></div>
+    <div id="guest_url"><label for="url"><span>网址</span></label><input type="text" name="url" id="url" value="" size="22" tabindex="3"></div>
+   </div>
+
+   
+   <div id="comment_textarea">
+    <textarea name="comment" id="comment" cols="50" rows="10" tabindex="4" onkeydown="if(event.ctrlKey&amp;&amp;event.keyCode==13){document.getElementById(&#39;submit_comment&#39;).click();return false};"></textarea>
+   </div>
+
+  <div id="custom_smilies">
+	<!-- Custom Smilies - Version 2.9.2 -->
+	<style type="text/css">
+	img.wp-smiley-select {cursor: pointer;}
+	</style>
+    <script type="text/javascript">
+    function grin(tag) {
+    	if (typeof tinyMCE != 'undefined') {
+    		grin_tinymcecomments(tag);
+    	} else {
+    		grin_plain(tag);
+    	}
+    }
+    function grin_tinymcecomments(tag) {
+    	tinyMCE.execCommand('mceInsertContent', false, ' ' + tag + ' ');
+    }
+    
+    function grin_plain(tag) {
+    	var myField;
+    	var myCommentTextarea = "comment";
+    	tag = ' ' + tag + ' ';
+        if (document.getElementById(myCommentTextarea) && document.getElementById(myCommentTextarea).type == 'textarea') {
+    		myField = document.getElementById(myCommentTextarea);
+    	} else {
+    		return false;
+    	}
+    	if (document.selection) {
+    		myField.focus();
+    		sel = document.selection.createRange();
+    		sel.text = tag;
+    		myField.focus();
+    	}
+    	else if (myField.selectionStart || myField.selectionStart == '0') {
+    		var startPos = myField.selectionStart;
+    		var endPos = myField.selectionEnd;
+    		var cursorPos = endPos;
+    		myField.value = myField.value.substring(0, startPos)
+    					  + tag
+    					  + myField.value.substring(endPos, myField.value.length);
+    		cursorPos += tag.length;
+    		myField.focus();
+    		myField.selectionStart = cursorPos;
+    		myField.selectionEnd = cursorPos;
+    	}
+    	else {
+    		myField.value += tag;
+    		myField.focus();
+    	}
+    }
+    
+    function moreSmilies() {
+    	document.getElementById('wp-smiley-more').style.display = 'inline';
+    	document.getElementById('wp-smiley-toggle').innerHTML = '<a href="javascript:lessSmilies()">&laquo;&nbsp;less</a></span>';
+    }
+    
+    function lessSmilies() {
+    	document.getElementById('wp-smiley-more').style.display = 'none';
+    	document.getElementById('wp-smiley-toggle').innerHTML = '<a href="javascript:moreSmilies()">more&nbsp;&raquo;</a>';
+    }
+    </script>
+<img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/good.gif" alt="[em_zan]" onclick="grin(&quot;[em_zan]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/yali.gif" alt="[em_yali]" onclick="grin(&quot;[em_yali]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/xiao.gif" alt="[em_xiao]" onclick="grin(&quot;[em_xiao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/xhj.gif" alt="[em_xhj]" onclick="grin(&quot;[em_xhj]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/tucao.gif" alt="[em_tucao]" onclick="grin(&quot;[em_tucao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/tu.gif" alt="[em_tu]" onclick="grin(&quot;[em_tu]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/tiaopi.gif" alt="[em_tiaopi]" onclick="grin(&quot;[em_tiaopi]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/shaoxiang.gif" alt="[em_sx]" onclick="grin(&quot;[em_sx]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/shudaizi.gif" alt="[em_sdz]" onclick="grin(&quot;[em_sdz]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/shangbuqi.gif" alt="[em_sbq]" onclick="grin(&quot;[em_sbq]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/mobai.gif" alt="[em_mobai]" onclick="grin(&quot;[em_mobai]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/kouzhao.gif" alt="[em_kzh]" onclick="grin(&quot;[em_kzh]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/ku.gif" alt="[em_ku]" onclick="grin(&quot;[em_ku]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/koushui.gif" alt="[em_ksh]" onclick="grin(&quot;[em_ksh]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/keai.gif" alt="[em_keai]" onclick="grin(&quot;[em_keai]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jiong.gif" alt="[em_jiong]" onclick="grin(&quot;[em_jiong]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jing.gif" alt="[em_jing]" onclick="grin(&quot;[em_jing]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/huaixiao.gif" alt="[em_hx]" onclick="grin(&quot;[em_hx]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/han.gif" alt="[em_han]" onclick="grin(&quot;[em_han]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/ganga.gif" alt="[em_ganga]" onclick="grin(&quot;[em_ganga]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/daxiao.gif" alt="[em_daxiao]" onclick="grin(&quot;[em_daxiao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/cool.gif" alt="[em_cool]" onclick="grin(&quot;[em_cool]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/chi.gif" alt="[em_chi]" onclick="grin(&quot;[em_chi]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/bu.gif" alt="[em_bu]" onclick="grin(&quot;[em_bu]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/bizui.gif" alt="[em_bizui]" onclick="grin(&quot;[em_bizui]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/ai.gif" alt="[em_ai]" onclick="grin(&quot;[em_ai]&quot;)" class="wp-smiley-select"> </div>
+
+   <div id="submit_comment_wrapper">
+    <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="f583acffd3"></p><p style="display: none;"></p>    <input name="submit" type="submit" id="submit_comment" tabindex="5" value="发表评论/Ctrl+Enter" title="发表评论/Ctrl+Enter" alt="发表评论/Ctrl+Enter">
+   </div>
+   <div id="input_hidden_field">
+        <input type="hidden" name="comment_post_ID" value="303" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+       </div>
+
+  <input type="hidden" id="ak_js" name="ak_js" value="1475227566172"></form>
+
+ </fieldset><!-- #comment-form-area END -->
+
+</div><!-- #comment end -->   </div>
+   
+      <div id="previous_next_post_single">
+    <div class="clearfix">
+     <p id="previous_post"><a href="http://www.pythoner.com/302.html" rel="prev">《Introduction to Tornado》中文翻译计划——第七章：外部服务认证</a></p>     <p id="next_post"><a href="http://www.pythoner.com/310.html" rel="next">谈谈各网申系统的用户体验</a></p>    </div>
+   </div>
+   
+
+  </div><!-- END #left_col -->
+
+  <div id="container" style="height: 7773px;"></div>
+
+    <div id="right_col">
+   
+<div id="info_area">
+ <div class="side_box clearfix" id="info_content">
+    <h3 class="side_title">扫描二维码访问本站</h3>
+    <div class="desc">
+   <p><img src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/pythoner_qrcode_150.png" alt="扫描二维码访问本站"></p>
+  </div>
+ </div>
+</div>
+
+<div class="side_box clearfix" id="side_meta_content">
+
+  <ul id="social_link" class="clearfix">
+    <li class="rss_button"><a class="target_blank" href="http://www.pythoner.com/feed" target="_blank">rss</a></li>
+          <li class="weibo_button"><a class="target_blank" href="http://weibo.com/alioth310" target="_blank">weibo</a></li>
+         </ul>
+ 
+  <div id="search_area">
+    <form method="get" id="searchform" action="http://www.pythoner.com/">
+   <div><input id="search_button" class="rollover" type="image" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/search_button.gif" alt="搜索一下" title="搜索一下"></div>
+   <div><input id="search_input" type="text" value="搜索一下" name="s" onfocus="if (this.value == &#39;搜索一下&#39;) this.value = &#39;&#39;;" onblur="if (this.value == &#39;&#39;) this.value = &#39;搜索一下&#39;;"></div>
+  </form>
+   </div>
+ 
+</div>
+
+
+<div id="side_top">
+
+ <div class="side_box widget_text" id="text-3">
+<h3 class="side_title">支持我</h3>
+			<div class="textwidget"><ul>
+  <li><a href="https://www.digitalocean.com/?refcode=32ac9c46cd67">DigitalOcean邀请注册（送10刀）</a></li>
+  <li>域名出售：
+    <ul>
+      <li>shangpolu.com（上坡路）</li>
+      <li>pythonsky.com</li>
+    </ul>
+  </li> 
+</ul></div>
+		</div>
+<div class="side_box widget_views" id="views-2">
+<h3 class="side_title">热门文章</h3>
+<ul>
+<li><a href="http://www.pythoner.com/83.html" title="Windows下PyQt4的安装">Windows下PyQt4的安装</a></li><li><a href="http://www.pythoner.com/106.html" title="Windows下Eclipse+PyDev安装Python开发环境">Windows下Eclipse+PyDev安装Python开发环境</a></li><li><a href="http://www.pythoner.com/46.html" title="Python函数式编程——map()、reduce()">Python函数式编程——map()、reduce()</a></li><li><a href="http://www.pythoner.com/89.html" title="使用eric创建一个PyQt项目">使用eric创建一个PyQt项目</a></li><li><a href="http://www.pythoner.com/205.html" title="Python标准库——collections模块的Counter类">Python标准库——collections模块的Counter类</a></li><li><a href="http://www.pythoner.com/111.html" title="使用Py2exe将PyQt程序打包为exe文件">使用Py2exe将PyQt程序打包为exe文件</a></li><li><a href="http://www.pythoner.com/13.html" title="Python中如何实现两个字典合并">Python中如何实现两个字典合并</a></li><li><a href="http://www.pythoner.com/273.html" title="《Introduction to Tornado》中文翻译计划——第一章：引言">《Introduction to Tornado》中文翻译计划——第一章：引言</a></li><li><a href="http://www.pythoner.com/148.html" title="【Python教程】雨痕 的《Python学习笔记》（附脑图）">【Python教程】雨痕 的《Python学习笔记》（附脑图）</a></li><li><a href="http://www.pythoner.com/238.html" title="《机器学习实战》读书笔记">《机器学习实战》读书笔记</a></li></ul>
+</div>
+		<div class="side_box widget_recent_entries" id="recent-posts-2">
+		<h3 class="side_title">最新文章</h3>
+		<ul>
+					<li>
+				<a href="http://www.pythoner.com/474.html">《Python核心编程（第3版）》勘误</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/416.html">【漏洞预警】Tornado某缺陷可能造成文件读取漏洞 （updated @ 2015-03-04）</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/414.html">使用Python下载邮件（pop/imap）</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/386.html">《Web之困》读书笔记</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/364.html">Tornado 4.0发布</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/357.html">Python设置终端显示颜色、粗体、下划线等效果</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/356.html">Python天坑系列（一）：while 1比while True更快？</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/345.html">Python socket模拟TCP通讯</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/337.html">《思考的乐趣》读书笔记</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/329.html">《代码的未来》读书笔记</a>
+						</li>
+				</ul>
+		</div>
+		<div class="side_box widget_recent_comments" id="recent-comments-2">
+<h3 class="side_title">最新评论</h3>
+<ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Nicoder</span>发表在《<a href="http://www.pythoner.com/205.html#comment-43572">Python标准库——collections模块的Counter类</a>》</li><li class="recentcomments"><span class="comment-author-link">analgestic</span>发表在《<a href="http://www.pythoner.com/89.html#comment-43471">使用eric创建一个PyQt项目</a>》</li><li class="recentcomments"><span class="comment-author-link">dmdoge</span>发表在《<a href="http://www.pythoner.com/46.html#comment-43467">Python函数式编程——map()、reduce()</a>》</li><li class="recentcomments"><span class="comment-author-link">alioth310</span>发表在《<a href="http://www.pythoner.com/196.html#comment-43430">配置SecureCRT连接本地虚拟机中的Linux系统</a>》</li><li class="recentcomments"><span class="comment-author-link">cheryH</span>发表在《<a href="http://www.pythoner.com/196.html#comment-43427">配置SecureCRT连接本地虚拟机中的Linux系统</a>》</li></ul></div>
+<div class="side_box widget_tag_cloud" id="tag_cloud-2">
+<h3 class="side_title">标签云</h3>
+<div class="tagcloud"><a href="http://www.pythoner.com/tag/dict" class="tag-link-6 tag-link-position-1" title="2个话题" style="font-size: 9.8pt;">dict</a>
+<a href="http://www.pythoner.com/tag/discuz" class="tag-link-49 tag-link-position-2" title="2个话题" style="font-size: 9.8pt;">discuz</a>
+<a href="http://www.pythoner.com/tag/editplus" class="tag-link-73 tag-link-position-3" title="2个话题" style="font-size: 9.8pt;">EditPlus</a>
+<a href="http://www.pythoner.com/tag/eric" class="tag-link-59 tag-link-position-4" title="2个话题" style="font-size: 9.8pt;">eric</a>
+<a href="http://www.pythoner.com/tag/git" class="tag-link-53 tag-link-position-5" title="2个话题" style="font-size: 9.8pt;">git</a>
+<a href="http://www.pythoner.com/tag/github" class="tag-link-105 tag-link-position-6" title="9个话题" style="font-size: 15pt;">GitHub</a>
+<a href="http://www.pythoner.com/tag/ide" class="tag-link-60 tag-link-position-7" title="2个话题" style="font-size: 9.8pt;">ide</a>
+<a href="http://www.pythoner.com/tag/linux" class="tag-link-142 tag-link-position-8" title="4个话题" style="font-size: 12pt;">Linux</a>
+<a href="http://www.pythoner.com/tag/matplotlib" class="tag-link-87 tag-link-position-9" title="2个话题" style="font-size: 9.8pt;">matplotlib</a>
+<a href="http://www.pythoner.com/tag/mongodb" class="tag-link-147 tag-link-position-10" title="2个话题" style="font-size: 9.8pt;">MongoDB</a>
+<a href="http://www.pythoner.com/tag/mysql" class="tag-link-144 tag-link-position-11" title="3个话题" style="font-size: 11pt;">MySQL</a>
+<a href="http://www.pythoner.com/tag/nosql" class="tag-link-32 tag-link-position-12" title="2个话题" style="font-size: 9.8pt;">NoSQL</a>
+<a href="http://www.pythoner.com/tag/php" class="tag-link-14 tag-link-position-13" title="2个话题" style="font-size: 9.8pt;">php</a>
+<a href="http://www.pythoner.com/tag/pyqt" class="tag-link-57 tag-link-position-14" title="5个话题" style="font-size: 12.8pt;">PyQt</a>
+<a href="http://www.pythoner.com/tag/python" class="tag-link-138 tag-link-position-15" title="49个话题" style="font-size: 22pt;">python</a>
+<a href="http://www.pythoner.com/tag/pythonic" class="tag-link-5 tag-link-position-16" title="1个话题" style="font-size: 8pt;">pythonic</a>
+<a href="http://www.pythoner.com/tag/shell" class="tag-link-65 tag-link-position-17" title="4个话题" style="font-size: 12pt;">Shell</a>
+<a href="http://www.pythoner.com/tag/tornado" class="tag-link-146 tag-link-position-18" title="12个话题" style="font-size: 16.1pt;">Tornado</a>
+<a href="http://www.pythoner.com/tag/ubuntu" class="tag-link-83 tag-link-position-19" title="3个话题" style="font-size: 11pt;">Ubuntu</a>
+<a href="http://www.pythoner.com/tag/web" class="tag-link-104 tag-link-position-20" title="2个话题" style="font-size: 9.8pt;">Web</a>
+<a href="http://www.pythoner.com/tag/wordpress" class="tag-link-139 tag-link-position-21" title="4个话题" style="font-size: 12pt;">WordPress</a>
+<a href="http://www.pythoner.com/tag/%e4%b8%ad%e6%96%87%e4%b9%b1%e7%a0%81" class="tag-link-88 tag-link-position-22" title="2个话题" style="font-size: 9.8pt;">中文乱码</a>
+<a href="http://www.pythoner.com/tag/%e4%ba%ba%e4%ba%ba%e7%bd%91" class="tag-link-42 tag-link-position-23" title="2个话题" style="font-size: 9.8pt;">人人网</a>
+<a href="http://www.pythoner.com/tag/%e4%bb%a3%e7%a0%81" class="tag-link-43 tag-link-position-24" title="6个话题" style="font-size: 13.5pt;">代码</a>
+<a href="http://www.pythoner.com/tag/%e5%87%bd%e6%95%b0%e5%bc%8f%e7%bc%96%e7%a8%8b" class="tag-link-22 tag-link-position-25" title="4个话题" style="font-size: 12pt;">函数式编程</a>
+<a href="http://www.pythoner.com/tag/%e5%88%97%e8%a1%a8%e8%a7%a3%e6%9e%90" class="tag-link-27 tag-link-position-26" title="2个话题" style="font-size: 9.8pt;">列表解析</a>
+<a href="http://www.pythoner.com/tag/%e5%ae%89%e5%85%a8" class="tag-link-25 tag-link-position-27" title="3个话题" style="font-size: 11pt;">安全</a>
+<a href="http://www.pythoner.com/tag/%e5%ae%89%e8%a3%85" class="tag-link-58 tag-link-position-28" title="2个话题" style="font-size: 9.8pt;">安装</a>
+<a href="http://www.pythoner.com/tag/%e6%80%9d%e7%bb%b4%e5%af%bc%e5%9b%be" class="tag-link-12 tag-link-position-29" title="23个话题" style="font-size: 18.8pt;">思维导图</a>
+<a href="http://www.pythoner.com/tag/%e6%95%8f%e6%8d%b7%e5%bc%80%e5%8f%91" class="tag-link-35 tag-link-position-30" title="4个话题" style="font-size: 12pt;">敏捷开发</a>
+<a href="http://www.pythoner.com/tag/%e6%95%b0%e6%8d%ae%e5%8f%af%e8%a7%86%e5%8c%96" class="tag-link-46 tag-link-position-31" title="2个话题" style="font-size: 9.8pt;">数据可视化</a>
+<a href="http://www.pythoner.com/tag/%e6%95%b0%e6%8d%ae%e5%ba%93" class="tag-link-140 tag-link-position-32" title="3个话题" style="font-size: 11pt;">数据库</a>
+<a href="http://www.pythoner.com/tag/%e6%96%87%e4%bb%b6%e5%af%b9%e6%af%94" class="tag-link-71 tag-link-position-33" title="2个话题" style="font-size: 9.8pt;">文件对比</a>
+<a href="http://www.pythoner.com/tag/%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0" class="tag-link-77 tag-link-position-34" title="2个话题" style="font-size: 9.8pt;">机器学习</a>
+<a href="http://www.pythoner.com/tag/%e7%99%bb%e5%bd%95" class="tag-link-50 tag-link-position-35" title="2个话题" style="font-size: 9.8pt;">登录</a>
+<a href="http://www.pythoner.com/tag/%e7%ae%97%e6%b3%95" class="tag-link-143 tag-link-position-36" title="3个话题" style="font-size: 11pt;">算法</a>
+<a href="http://www.pythoner.com/tag/%e7%bf%bb%e8%af%91" class="tag-link-106 tag-link-position-37" title="8个话题" style="font-size: 14.5pt;">翻译</a>
+<a href="http://www.pythoner.com/tag/%e8%84%9a%e6%9c%ac" class="tag-link-66 tag-link-position-38" title="2个话题" style="font-size: 9.8pt;">脚本</a>
+<a href="http://www.pythoner.com/tag/%e8%87%aa%e5%8a%a8%e8%a1%a5%e5%85%a8" class="tag-link-74 tag-link-position-39" title="2个话题" style="font-size: 9.8pt;">自动补全</a>
+<a href="http://www.pythoner.com/tag/%e8%ae%ba%e5%9d%9b" class="tag-link-51 tag-link-position-40" title="2个话题" style="font-size: 9.8pt;">论坛</a>
+<a href="http://www.pythoner.com/tag/%e8%ae%be%e8%ae%a1" class="tag-link-114 tag-link-position-41" title="3个话题" style="font-size: 11pt;">设计</a>
+<a href="http://www.pythoner.com/tag/%e8%af%ad%e6%b3%95%e9%ab%98%e4%ba%ae" class="tag-link-75 tag-link-position-42" title="2个话题" style="font-size: 9.8pt;">语法高亮</a>
+<a href="http://www.pythoner.com/tag/%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" class="tag-link-11 tag-link-position-43" title="28个话题" style="font-size: 19.6pt;">读书笔记</a>
+<a href="http://www.pythoner.com/tag/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b" class="tag-link-36 tag-link-position-44" title="2个话题" style="font-size: 9.8pt;">软件工程</a>
+<a href="http://www.pythoner.com/tag/%e9%85%8d%e7%bd%ae%e7%ae%a1%e7%90%86" class="tag-link-54 tag-link-position-45" title="2个话题" style="font-size: 9.8pt;">配置管理</a></div>
+</div>
+<div class="side_box widget_archive" id="archives-2">
+<h3 class="side_title">文章归档</h3>
+		<ul>
+			<li><a href="http://www.pythoner.com/date/2016/06">2016年六月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2015/03">2015年三月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2015/02">2015年二月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/12">2014年十二月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/07">2014年七月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/06">2014年六月</a>&nbsp;(2)</li>
+	<li><a href="http://www.pythoner.com/date/2014/03">2014年三月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/01">2014年一月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/12">2013年十二月</a>&nbsp;(6)</li>
+	<li><a href="http://www.pythoner.com/date/2013/11">2013年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/10">2013年十月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/09">2013年九月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/08">2013年八月</a>&nbsp;(5)</li>
+	<li><a href="http://www.pythoner.com/date/2013/07">2013年七月</a>&nbsp;(12)</li>
+	<li><a href="http://www.pythoner.com/date/2013/06">2013年六月</a>&nbsp;(3)</li>
+	<li><a href="http://www.pythoner.com/date/2013/05">2013年五月</a>&nbsp;(8)</li>
+	<li><a href="http://www.pythoner.com/date/2013/04">2013年四月</a>&nbsp;(3)</li>
+	<li><a href="http://www.pythoner.com/date/2013/03">2013年三月</a>&nbsp;(5)</li>
+	<li><a href="http://www.pythoner.com/date/2013/02">2013年二月</a>&nbsp;(13)</li>
+	<li><a href="http://www.pythoner.com/date/2013/01">2013年一月</a>&nbsp;(15)</li>
+	<li><a href="http://www.pythoner.com/date/2012/12">2012年十二月</a>&nbsp;(1)</li>
+		</ul>
+		</div>
+<div class="side_box widget_categories" id="categories-2">
+<h3 class="side_title">分类目录</h3>
+		<ul>
+	<li class="cat-item cat-item-13"><a href="http://www.pythoner.com/category/wordpress">WordPress</a> (4)
+</li>
+	<li class="cat-item cat-item-79"><a href="http://www.pythoner.com/category/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f">操作系统</a> (5)
+<ul class="children">
+	<li class="cat-item cat-item-64"><a href="http://www.pythoner.com/category/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f/linux">Linux</a> (5)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-33"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93">数据库</a> (2)
+<ul class="children">
+	<li class="cat-item cat-item-102"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93/mongodb">MongoDB</a> (1)
+</li>
+	<li class="cat-item cat-item-84"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93/mysql">MySQL</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-107"><a href="http://www.pythoner.com/category/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c">用户体验</a> (1)
+</li>
+	<li class="cat-item cat-item-78"><a href="http://www.pythoner.com/category/%e7%ae%97%e6%b3%95">算法</a> (1)
+</li>
+	<li class="cat-item cat-item-2"><a href="http://www.pythoner.com/category/programming-language">编程语言</a> (43)
+<ul class="children">
+	<li class="cat-item cat-item-56"><a href="http://www.pythoner.com/category/programming-language/android">Android</a> (1)
+</li>
+	<li class="cat-item cat-item-90"><a href="http://www.pythoner.com/category/programming-language/latex">LaTeX</a> (1)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.pythoner.com/category/programming-language/python">python</a> (40)
+	<ul class="children">
+	<li class="cat-item cat-item-101"><a href="http://www.pythoner.com/category/programming-language/python/tornado">Tornado</a> (11)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-72"><a href="http://www.pythoner.com/category/programming-language/shell-programming-language">shell</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.pythoner.com/category/note">读书笔记</a> (28)
+</li>
+		</ul>
+</div>
+<div class="side_box widget_links" id="linkcat-0">
+<h3 class="side_title">书签</h3>
+
+	<ul class="xoxo blogroll">
+<li><a href="http://blog.coocla.org/" target="_blank">Coocla</a></li>
+<li><a href="http://www.findspace.name/">FindSpace</a></li>
+
+	</ul>
+</div>
+
+</div>
+<div id="side_middle" class="clearfix">
+ <div id="side_left">
+   </div>
+ <div id="side_right">
+   </div>
+</div>
+<div id="side_bottom">
+ <div class="side_box widget_meta" id="meta-2">
+<h3 class="side_title">功能</h3>
+			<ul>
+						<li><a href="http://www.pythoner.com/wp-login.php">登录</a></li>
+			<li><a href="http://www.pythoner.com/feed">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://www.pythoner.com/comments/feed">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>			</ul>
+			</div>
+</div>
+
+  </div>
+  
+  <div id="footer">
+   <ul id="copyright">
+    <li>版权所有 ©&nbsp; <a href="http://www.pythoner.com/">Pythoner</a></li>
+    <li>主题由 <a class="target_blank" href="http://www.mono-lab.net/" target="_blank">mono-lab</a> 设计 <a class="target_blank" href="http://pythoner.com/" target="_blank">你像从前一样</a> 修改</li>
+    <li>由 <a class="target_blank" href="http://wordpress.org/" target="_blank">WordPress</a> 强力驱动</li>
+    <li class="last"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253420103'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s6.cnzz.com/z_stat.php%3Fid%3D1253420103' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1253420103"><a href="http://www.cnzz.com/stat/website.php?web_id=1253420103" target="_blank" title="站长统计">站长统计</a></span><script src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/z_stat.php" type="text/javascript"></script><script src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/core.php" charset="utf-8" type="text/javascript"></script></li>
+   </ul>
+  </div>
+
+ </div><!-- END #main_content -->
+
+
+  <p id="return_top" style="display: none;"><a href="http://www.pythoner.com/303.html#header">return top</a></p>
+ 
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/form.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"http:\/\/www.pythoner.com\/wp-admin\/admin-ajax.php","post_id":"303"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/postviews-cache.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/jquery.sonar.min.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/lazy-load.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第八章：部署Tornado _ Pythoner_files/wp-embed.min.js"></script>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=2&amp;pos=right&amp;uid=1482744"></script>
+
+<script type="text/javascript">
+var bds_config={"bdTop":200};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+
+
+
+<!-- Dynamic page generated in 0.645 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-09-30 17:26:05 -->
+
+<!-- super cache --></body></html>

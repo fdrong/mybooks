@@ -1,0 +1,1117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!-- saved from url=(0032)http://www.pythoner.com/295.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 | Pythoner</title>
+<meta name="description" content="你像从前一样的Python学习笔记">
+
+<link rel="alternate" type="application/rss+xml" title="Pythoner RSS Feed" href="http://www.pythoner.com/feed">
+<link rel="alternate" type="application/atom+xml" title="Pythoner Atom Feed" href="http://www.pythoner.com/feed/atom"> 
+<link rel="pingback" href="http://www.pythoner.com/xmlrpc.php">
+
+<link rel="stylesheet" href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/style.css" type="text/css">
+<link rel="stylesheet" href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/comment-style.css" type="text/css">
+
+ 
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Pythoner » 《Introduction to Tornado》中文翻译计划——第六章：编写安全应用评论Feed" href="http://www.pythoner.com/295.html/feed">
+		<script type="text/javascript" async="" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.pythoner.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.1"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="crayon-css" href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-son-of-obsidian-css" href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/son-of-obsidian.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/monaco.css" type="text/css" media="all">
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jquery.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/www.pythoner.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"\u70b9\u51fb\u5c55\u5f00\u4ee3\u7801"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/crayon.min.js"></script>
+<link rel="https://api.w.org/" href="http://www.pythoner.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.pythoner.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.pythoner.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="《Introduction to Tornado》中文翻译计划——第五章：异步Web服务" href="http://www.pythoner.com/294.html">
+<link rel="next" title="《Introduction to Tornado》中文翻译计划——第七章：外部服务认证" href="http://www.pythoner.com/302.html">
+<meta name="generator" content="WordPress 4.6.1">
+<link rel="shortlink" href="http://www.pythoner.com/?p=295">
+<link rel="alternate" type="application/json+oembed" href="http://www.pythoner.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.pythoner.com%2F295.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.pythoner.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.pythoner.com%2F295.html&amp;format=xml">
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37612759-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "http://www.pythoner.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.6.1';
+	window._wp_rp_post_id = '295';
+	window._wp_rp_num_rel_posts = '5';
+	window._wp_rp_thumbnails = false;
+	window._wp_rp_post_title = '%E3%80%8AIntroduction+to+Tornado%E3%80%8B%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91%E8%AE%A1%E5%88%92%E2%80%94%E2%80%94%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E7%BC%96%E5%86%99%E5%AE%89%E5%85%A8%E5%BA%94%E7%94%A8';
+	window._wp_rp_post_tags = ['tornado', 'python', 'github', '%3F%3F', 'tornado', 'time', 'set', 'count', 'def', 'applic', 'tornado', 'introduct', 'page', 'cooki', 'pre', 'view', '1', 'import', 'main', 'port'];
+	window._wp_rp_promoted_content = true;
+</script>
+<style type="text/css">
+.related_post_title {
+  margin: 40px 0 10px !important;
+  color: #333 !important;
+}
+ul.related_post {
+}
+ul.related_post li {
+}
+ul.related_post li a {
+}
+ul.related_post li img {
+}</style>
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jscript.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/comment.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/rollover.js"></script>
+
+<!--[if IE 7]>
+<link rel="stylesheet" href="http://www.pythoner.com/wp-content/themes/flat/ie7.css" type="text/css" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" href="http://www.pythoner.com/wp-content/themes/flat/ie8.css" type="text/css" />
+<![endif]-->
+
+
+<style type="text/css">
+a, .post .title a:hover, .post_meta a:hover, #bread_crumb ul li a:hover, #previous_post a:hover, #next_post a:hover, .post a.more-link:hover, #right_col li a:hover, #copyright li a:hover, #archive_headline #keyword,
+   #comments_wrapper a:hover, #comment_header_right .comment_switch_active a, #comment_header_right .comment_switch_active a:hover, #comment_pager .current
+   { color:#00A19E; }
+
+#no_post a.back:hover, #wp-calendar td a:hover, #wp-calendar #prev a:hover, #wp-calendar #next a:hover, .page_navi a:hover, #submit_comment:hover
+ { background-color:#00A19E; }
+
+#guest_info input:focus, #comment_textarea textarea:focus
+ { border:1px solid #00A19E; }
+
+a:hover
+ { color:#BDC900; }
+
+body { font-size:13px; }
+
+
+
+</style>
+
+<link href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/logger.js"></script></head>
+
+<body><iframe frameborder="0" style="display: none;" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/saved_resource.html"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/saved_resource(1).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/295.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/295.html#" class="goWebsite">百度分享</a></p></div></div></div><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/saved_resource(2).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/295.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/295.html#" class="goWebsite">百度分享</a></p></div></div></div><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/saved_resource(3).html"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.pythoner.com/295.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.pythoner.com/295.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.pythoner.com/295.html#" class="goWebsite">百度分享</a></p></div></div></div>
+
+ <div id="header">
+  <div class="header_menu">
+    <ul id="menu-nav" class="menu"><li id="menu-item-29" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-29"><a href="http://www.pythoner.com/category/programming-language/python">Python</a></li>
+<li id="menu-item-28" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28"><a href="http://www.pythoner.com/category/note">读书笔记</a></li>
+<li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="http://www.pythoner.com/about">About</a></li>
+</ul>    </div>
+  <!-- logo -->
+  <h1 class="logo_text"><a href="http://www.pythoner.com/">Pythoner</a></h1>
+<h2 id="site_description">你像从前一样的Python学习笔记</h2>
+ </div>
+
+ <div id="main_content" class="clearfix">
+
+  <div id="left_col">
+      <div id="bread_crumb">
+    <ul class="clearfix">
+     <li id="bc_home"><a href="http://www.pythoner.com/" title="首页">首页</a></li>
+     <li id="bc_cat"><a href="http://www.pythoner.com/category/programming-language">编程语言</a><a href="http://www.pythoner.com/category/programming-language/python">python</a><a href="http://www.pythoner.com/category/programming-language/python/tornado">Tornado</a></li>     <li class="last">《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</li>
+    </ul>
+   </div>
+   
+   
+   <div class="post_wrap clearfix" id="single">
+    <div class="post">
+     <h3 class="title"><span>《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</span></h3>
+     <div class="post_content">
+      <div class="post_baidushare_up clearfix">
+       <!-- Baidu Button BEGIN -->
+       <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+       <a class="bds_tsina" title="分享到新浪微博" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_renren" title="分享到人人网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_tqq" title="分享到腾讯微博" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_qzone" title="分享到QQ空间" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_douban" title="分享到豆瓣网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_diandian" title="分享到点点网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_twi" title="分享到Twitter" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_fbook" title="分享到Facebook" href="http://www.pythoner.com/295.html#"></a>
+       <span class="bds_more">更多</span>
+       <a class="shareCount" href="http://www.pythoner.com/295.html#" title="累计分享1次">1</a>
+       </div>
+       <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1482744" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/bds_s_v2.js"></script>
+       
+       <script type="text/javascript">
+       document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+       </script>
+       <!-- Baidu Button END -->
+      </div>
+      <p>本文为《Introduction to Tornado》中文翻译，将在<a href="https://github.com/alioth310/itt2zh" title="Introduction to Tornado 中文翻译" target="_blank">https://github.com/alioth310/itt2zh</a>上面持续更新，本文内容可能不是最新状态，请在GitHub上获得最新版本。</p>
+<p>本文也可在<a href="http://demo.pythoner.com/itt2zh">http://demo.pythoner.com/itt2zh</a>上进行格式化的预览。</p>
+<p><strong>第六章：编写安全应用</strong></p>
+<p>很多时候，安全应用是以牺牲复杂度（以及开发者的头痛）为代价的。Tornado Web服务器从设计之初就在安全方面有了很多考虑，使其能够更容易地防范那些常见的漏洞。安全cookies防止用户的本地状态被其浏览器中的恶意代码暗中修改。此外，浏览器cookies可以与HTTP请求参数值作比较来防范跨站请求伪造攻击。在本章中，我们将看到使防范这些漏洞更简单的Tornado功能，以及使用这些功能的一个用户验证示例。<br>
+<span id="more-295"></span></p>
+<h1>6.1 Cookie漏洞</h1>
+<p>许多网站使用浏览器cookies来存储浏览器会话间的用户标识。这是一个简单而又被广泛兼容的方式来存储跨浏览器会话的持久状态。不幸的是，浏览器cookies容易受到一些常见的攻击。本节将展示Tornado是如何防止一个恶意脚本来篡改你应用存储的cookies的。</p>
+<h2>6.1.1 Cookie伪造</h2>
+<p>有很多方式可以在浏览器中截获cookies。JavaScript和Flash对于它们所执行的页面的域有读写cookies的权限。浏览器插件也可由编程方法访问这些数据。跨站脚本攻击可以利用这些访问来修改访客浏览器中cookies的值。</p>
+<h2>6.1.2 安全Cookies</h2>
+<p>Tornado的安全cookies使用加密签名来验证cookies的值没有被服务器软件以外的任何人修改过。因为一个恶意脚本并不知道安全密钥，所以它不能在应用不知情时修改cookies。</p>
+<h3>6.1.2.1 使用安全Cookies</h3>
+<p>Tornado的set_secure_cookie()和get_secure_cookie()函数发送和取得浏览器的cookies，以防范浏览器中的恶意修改。为了使用这些函数，你必须在应用的构造函数中指定cookie_secret参数。让我们来看一个简单的例子。</p>
+<p>代码清单6-1中的应用将渲染一个统计浏览器中页面被加载次数的页面。如果没有设置cookie（或者cookie已经被篡改了），应用将设置一个值为1的新cookie。否则，应用将从cookie中读到的值加1。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b1c388382471" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单6-1 安全Cookie示例：cookie_counter.py</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">import tornado.httpserver
+import tornado.ioloop
+import tornado.web
+import tornado.options
+
+from tornado.options import define, options
+define("port", default=8000, help="run on the given port", type=int)
+
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        cookie = self.get_secure_cookie("count")
+        count = int(cookie) + 1 if cookie else 1
+
+        countString = "1 time" if count == 1 else "%d times" % count
+
+        self.set_secure_cookie("count", str(count))
+
+        self.write(
+            '&lt;html&gt;&lt;head&gt;&lt;title&gt;Cookie Counter&lt;/title&gt;&lt;/head&gt;'
+            '&lt;body&gt;&lt;h1&gt;You’ve viewed this page %s times.&lt;/h1&gt;' % countString + 
+            '&lt;/body&gt;&lt;/html&gt;'
+        )
+
+if __name__ == "__main__":
+    tornado.options.parse_command_line()
+
+    settings = {
+        "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="
+    }
+
+    application = tornado.web.Application([
+        (r'/', MainHandler)
+    ], **settings)
+
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(options.port)
+    tornado.ioloop.IOLoop.instance().start()</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-8">8</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-10">10</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-12">12</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-14">14</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-16">16</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-18">18</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-20">20</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-22">22</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-24">24</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-26">26</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-28">28</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-29">29</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-30">30</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-31">31</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-32">32</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-33">33</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-34">34</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-35">35</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b1c388382471-36">36</div><div class="crayon-num" data-line="crayon-57ee2f8562b1c388382471-37">37</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">httpserver</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-2"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">ioloop</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-3"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">web</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-4"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">options</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-6"><span class="crayon-st">from</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">options </span><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">define</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">options</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-7"><span class="crayon-e">define</span><span class="crayon-sy">(</span><span class="crayon-s">"port"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">default</span><span class="crayon-o">=</span><span class="crayon-cn">8000</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">help</span><span class="crayon-o">=</span><span class="crayon-s">"run on the given port"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">type</span><span class="crayon-o">=</span><span class="crayon-k ">int</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-8">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-9"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">MainHandler</span><span class="crayon-sy">(</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-v">RequestHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">cookie</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">get_secure_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"count"</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">count</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-k ">int</span><span class="crayon-sy">(</span><span class="crayon-k ">cookie</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">+</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-h"> </span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-k ">cookie</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-cn">1</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-13">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">countString</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"1 time"</span><span class="crayon-h"> </span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-v">count</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-s">"%d times"</span><span class="crayon-h"> </span><span class="crayon-o">%</span><span class="crayon-h"> </span><span class="crayon-e">count</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-15">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-16"><span class="crayon-e">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">set_secure_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"count"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">str</span><span class="crayon-sy">(</span><span class="crayon-v">count</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-17">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">write</span><span class="crayon-sy">(</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-19"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">'&lt;html&gt;&lt;head&gt;&lt;title&gt;Cookie Counter&lt;/title&gt;&lt;/head&gt;'</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-20"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">'&lt;body&gt;&lt;h1&gt;You’ve viewed this page %s times.&lt;/h1&gt;'</span><span class="crayon-h"> </span><span class="crayon-o">%</span><span class="crayon-h"> </span><span class="crayon-v">countString</span><span class="crayon-h"> </span><span class="crayon-o">+</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-21"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">'&lt;/body&gt;&lt;/html&gt;'</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-22"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-23">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-24"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-v">__name__</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">"__main__"</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-25"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">options</span><span class="crayon-sy">.</span><span class="crayon-e">parse_command_line</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-26">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-27"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">settings</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-28"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"cookie_secret"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-29"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-30">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-31"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">application</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">Application</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-32"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">MainHandler</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-33"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-o">*</span><span class="crayon-o">*</span><span class="crayon-v">settings</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-34">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-35"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">http_server</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">httpserver</span><span class="crayon-sy">.</span><span class="crayon-e">HTTPServer</span><span class="crayon-sy">(</span><span class="crayon-v">application</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b1c388382471-36"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">http_server</span><span class="crayon-sy">.</span><span class="crayon-e">listen</span><span class="crayon-sy">(</span><span class="crayon-v">options</span><span class="crayon-sy">.</span><span class="crayon-v">port</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b1c388382471-37"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">ioloop</span><span class="crayon-sy">.</span><span class="crayon-v">IOLoop</span><span class="crayon-sy">.</span><span class="crayon-e">instance</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">start</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0112 seconds] -->
+<p> </p>
+<p>果你检查浏览器中的cookie值，会发现count储存的值类似于MQ==|1310335926|8ef174ecc489ea963c5cdc26ab6d41b49502f2e2。Tornado将cookie值编码为Base-64字符串，并添加了一个时间戳和一个cookie内容的HMAC签名。如果cookie的时间戳太旧（或来自未来），或签名和期望值不匹配，get_secure_cookie()函数会认为cookie已经被篡改，并返回None，就好像cookie从没设置过一样。</p>
+<p><a href="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/tip.jpg"><img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/tip.jpg" alt="tip" width="65" height="70" class="alignleft size-full wp-image-276" data-lazy-loaded="true" style="display: block;"><noscript>&lt;img src="http://www.pythoner.com/wp-content/uploads/2013/07/tip.jpg" alt="tip" width="65" height="70" class="alignleft size-full wp-image-276" /&gt;</noscript></a>传递给Application构造函数的cookie_secret值应该是唯一的随机字符串。在Python shell下执行下面的代码片段将产生一个你自己的值：</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b35045310717" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">&gt;&gt;&gt; import base64, uuid
+&gt;&gt;&gt; base64.b64encode(uuid.uuid4().bytes + uuid.uuid4().bytes)
+'bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E='</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b35045310717-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b35045310717-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b35045310717-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b35045310717-1"><span class="crayon-o">&gt;&gt;&gt;</span><span class="crayon-h"> </span><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-k ">base64</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">uuid</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b35045310717-2"><span class="crayon-o">&gt;&gt;&gt;</span><span class="crayon-h"> </span><span class="crayon-k ">base64</span><span class="crayon-sy">.</span><span class="crayon-e">b64encode</span><span class="crayon-sy">(</span><span class="crayon-k ">uuid</span><span class="crayon-sy">.</span><span class="crayon-e">uuid4</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-v">bytes</span><span class="crayon-h"> </span><span class="crayon-o">+</span><span class="crayon-h"> </span><span class="crayon-k ">uuid</span><span class="crayon-sy">.</span><span class="crayon-e">uuid4</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-v">bytes</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b35045310717-3"><span class="crayon-s">'bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E='</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0016 seconds] -->
+<p> </p>
+<p>然而，Tornado的安全cookies仍然容易被窃听。攻击者可能会通过脚本或浏览器插件截获cookies，或者干脆窃听未加密的网络数据。记住cookie值是签名的而不是加密的。恶意程序能够读取已存储的cookies，并且可以传输他们的数据到任意服务器，或者通过发送没有修改的数据给应用伪造请求。因此，避免在浏览器cookie中存储敏感的用户数据是非常重要的。</p>
+<p>我们还需要注意用户可能修改他自己的cookies的可能性，这会导致提权攻击。比如，如果我们在cookie中存储了用户已付费的文章剩余的浏览数，我们希望防止用户自己更新其中的数值来获取免费的内容。httponly和secure属性可以帮助我们防范这种攻击。</p>
+<h3>6.1.2.2 HTTP-Only和SSL Cookies</h3>
+<p>Tornado的cookie功能依附于Python内建的Cookie模块。因此，我们可以利用它所提供的一些安全功能。这些安全属性是HTTP cookie规范的一部分，并在它可能是如何暴露其值给它连接的服务器和它运行的脚本方面给予浏览器指导。比如，我们可以通过只允许SSL连接的方式减少cookie值在网络中被截获的可能性。我们也可以让浏览器对JavaScript隐藏cookie值。</p>
+<p>为cookie设置secure属性来指示浏览器只通过SSL连接传递cookie。（这可能会产生一些困扰，但这不是Tornado的安全cookies，更精确的说那种方法应该被称为签名cookies。）从Python 2.6版本开始，Cookie对象还提供了一个httponly属性。包括这个属性指示浏览器对于JavaScript不可访问cookie，这可以防范来自读取cookie值的跨站脚本攻击。</p>
+<p>为了开启这些功能，你可以向set_cookie和set_secure_cookie方法传递关键字参数。比如，一个安全的HTTP-only cookie（不是Tornado的签名cookie）可以调用self.set_cookie(‘foo’, ‘bar’, httponly=True, secure=True)发送。</p>
+<p>既然我们已经探讨了一些保护存储在cookies中的持久数据的策略，下面让我们看看另一种常见的攻击载体。下一节我们将看到一种防范向你的应用发送伪造请求的恶意网站。</p>
+<h1>6.2 请求漏洞</h1>
+<p>任何Web应用所面临的一个主要安全漏洞是跨站请求伪造，通常被简写为CSRF或XSRF，发音为”sea surf”。这个漏洞利用了浏览器的一个允许恶意攻击者在受害者网站注入脚本使未授权请求代表一个已登录用户的安全漏洞。让我们看一个例子。</p>
+<h2>6.2.1 剖析一个XSRF</h2>
+<p>假设Alice是Burt’s Books的一个普通顾客。当她在这个在线商店登录帐号后，网站使用一个浏览器cookie标识她。现在假设一个不择手段的作者，Melvin，想增加他图书的销量。在一个Alice经常访问的Web论坛中，他发表了一个带有HTML图像标签的条目，其源码初始化为在线商店购物的URL。比如：</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b40080945624" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">XHTML</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">&lt;img src="http://store.burts-books.com/purchase?title=Melvins+Web+Sploitz" /&gt;</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b40080945624-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b40080945624-1"><span class="crayon-r ">&lt;img </span><span class="crayon-e ">src</span><span class="crayon-o">=</span><span class="crayon-s ">"http://store.burts-books.com/purchase?title=Melvins+Web+Sploitz"</span><span class="crayon-r "> /&gt;</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0005 seconds] -->
+<p> </p>
+<p>Alice的浏览器尝试获取这个图像资源，并且在请求中包含一个合法的cookies，并不知道取代小猫照片的是在线商店的购物URL。</p>
+<h2>6.2.2 防范请求伪造</h2>
+<p>有很多预防措施可以防止这种类型的攻击。首先你在开发应用时需要深谋远虑。任何会产生副作用的HTTP请求，比如点击购买按钮、编辑账户设置、改变密码或删除文档，都应该使用HTTP POST方法。无论如何，这是良好的RESTful做法，但它也有额外的优势用于防范像我们刚才看到的恶意图像那样琐碎的XSRF攻击。但是，这并不足够：一个恶意站点可能会通过其他手段，如HTML表单或XMLHTTPRequest API来向你的应用发送POST请求。保护POST请求需要额外的策略。</p>
+<p>为了防范伪造POST请求，我们会要求每个请求包括一个参数值作为令牌来匹配存储在cookie中的对应值。我们的应用将通过一个cookie头和一个隐藏的HTML表单元素向页面提供令牌。当一个合法页面的表单被提交时，它将包括表单值和已存储的cookie。如果两者匹配，我们的应用认定请求有效。</p>
+<p>由于第三方站点没有访问cookie数据的权限，他们将不能在请求中包含令牌cookie。这有效地防止了不可信网站发送未授权的请求。正如我们看到的，Tornado同样会让这个实现变得简单。</p>
+<h2>6.2.3 使用Tornado的XSRF保护</h2>
+<p>你可以通过在应用的构造函数中包含xsrf_cookies参数来开启XSRF保护：</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b4d297078827" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">settings = {
+    "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+    "xsrf_cookies": True
+}
+application = tornado.web.Application([
+    (r'/', MainHandler),
+    (r'/purchase', PurchaseHandler),
+], **settings)</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b4d297078827-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b4d297078827-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b4d297078827-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b4d297078827-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b4d297078827-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b4d297078827-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b4d297078827-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b4d297078827-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b4d297078827-1"><span class="crayon-v">settings</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b4d297078827-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"cookie_secret"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b4d297078827-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"xsrf_cookies"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-t">True</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b4d297078827-4"><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2f8562b4d297078827-5"><span class="crayon-v">application</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">Application</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b4d297078827-6"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">MainHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b4d297078827-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/purchase'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">PurchaseHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b4d297078827-8"><span class="crayon-sy">]</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-o">*</span><span class="crayon-o">*</span><span class="crayon-v">settings</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0023 seconds] -->
+<p> </p>
+<p>当这个应用标识被设置时，Tornado将拒绝请求参数中不包含正确的_xsrf值的POST、PUT和DELETE请求。Tornado将会在幕后处理_xsrf cookies，但你必须在你的HTML表单中包含XSRF令牌以确保授权合法请求。要做到这一点，只需要在你的模板中包含一个xsrf_form_html调用即可：</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b55866826618" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">XHTML</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">&lt;form action="/purchase" method="POST"&gt;
+    {% raw xsrf_form_html() %}
+    &lt;input type="text" name="title" /&gt;
+    &lt;input type="text" name="quantity" /&gt;
+    &lt;input type="submit" value="Check Out" /&gt;
+&lt;/form&gt;</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b55866826618-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b55866826618-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b55866826618-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b55866826618-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b55866826618-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b55866826618-6">6</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b55866826618-1"><span class="crayon-r ">&lt;form </span><span class="crayon-e ">action</span><span class="crayon-o">=</span><span class="crayon-s ">"/purchase"</span><span class="crayon-h"> </span><span class="crayon-e ">method</span><span class="crayon-o">=</span><span class="crayon-s ">"POST"</span><span class="crayon-r ">&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b55866826618-2"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;{% raw xsrf_form_html() %}</span></div><div class="crayon-line" id="crayon-57ee2f8562b55866826618-3"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;input </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s ">"text"</span><span class="crayon-h"> </span><span class="crayon-e ">name</span><span class="crayon-o">=</span><span class="crayon-s ">"title"</span><span class="crayon-r "> /&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b55866826618-4"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;input </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s ">"text"</span><span class="crayon-h"> </span><span class="crayon-e ">name</span><span class="crayon-o">=</span><span class="crayon-s ">"quantity"</span><span class="crayon-r "> /&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b55866826618-5"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;input </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s ">"submit"</span><span class="crayon-h"> </span><span class="crayon-e ">value</span><span class="crayon-o">=</span><span class="crayon-s ">"Check Out"</span><span class="crayon-r "> /&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b55866826618-6"><span class="crayon-r ">&lt;/form&gt;</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0016 seconds] -->
+<p> </p>
+<h3>6.2.3.1 XSRF令牌和AJAX请求</h3>
+<p>AJAX请求也需要一个_xsrf参数，但不是必须显式地在渲染页面时包含一个_xsrf值，而是通过脚本在客户端查询浏览器获得cookie值。下面的两个函数透明地添加令牌值给AJAX POST请求。第一个函数通过名字获取cookie，而第二个函数是一个添加_xsrf参数到传递给postJSON函数数据对象的便捷函数。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b5d975214071" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">JavaScript</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">function getCookie(name) {
+    var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return c ? c[1] : undefined;
+}
+
+jQuery.postJSON = function(url, data, callback) {
+    data._xsrf = getCookie("_xsrf");
+    jQuery.ajax({
+        url: url,
+        data: jQuery.param(data),
+        dataType: "json",
+        type: "POST",
+        success: callback
+    });
+}</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-8">8</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-10">10</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-12">12</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b5d975214071-14">14</div><div class="crayon-num" data-line="crayon-57ee2f8562b5d975214071-15">15</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-1"><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">getCookie</span><span class="crayon-sy">(</span><span class="crayon-r">name</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-t">var</span><span class="crayon-h"> </span><span class="crayon-v">c</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">document</span><span class="crayon-sy">.</span><span class="crayon-v">cookie</span><span class="crayon-sy">.</span><span class="crayon-e">match</span><span class="crayon-sy">(</span><span class="crayon-s">"\\b"</span><span class="crayon-h"> </span><span class="crayon-o">+</span><span class="crayon-h"> </span><span class="crayon-r">name</span><span class="crayon-h"> </span><span class="crayon-o">+</span><span class="crayon-h"> </span><span class="crayon-s">"=([^;]*)\\b"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-i">c</span><span class="crayon-h"> </span><span class="crayon-sy">?</span><span class="crayon-h"> </span><span class="crayon-v">c</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">undefined</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-4"><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-6"><span class="crayon-v">jQuery</span><span class="crayon-sy">.</span><span class="crayon-v">postJSON</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-t">function</span><span class="crayon-sy">(</span><span class="crayon-v">url</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">data</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">callback</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">data</span><span class="crayon-sy">.</span><span class="crayon-v">_xsrf</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">getCookie</span><span class="crayon-sy">(</span><span class="crayon-s">"_xsrf"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-8"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">jQuery</span><span class="crayon-sy">.</span><span class="crayon-e">ajax</span><span class="crayon-sy">(</span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">url</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">url</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">data</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">jQuery</span><span class="crayon-sy">.</span><span class="crayon-e">param</span><span class="crayon-sy">(</span><span class="crayon-v">data</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">dataType</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"json"</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"POST"</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-13"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">success</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">callback</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b5d975214071-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-57ee2f8562b5d975214071-15"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0046 seconds] -->
+<p> </p>
+<p>这些预防措施需要思考很多，而Tornado的安全cookies支持和XSRF保护减轻了应用开发者的一些负担。可以肯定的是，内建的安全功能也非常有用，但在思考你应用的安全性方面需要时刻保持警惕。有很多在线Web应用安全文献，其中一个更全面的实践对策集合是Mozilla的<a href="https://wiki.mozilla.org/WebAppSec/Secure_Coding_Guidelines" target="_blank">安全编程指南</a>。</p>
+<h1>6.3 用户验证</h1>
+<p>既然我们已经看到了如何安全地设置和取得cookies，并理解了XSRF攻击背后的原理，现在就让我们看一个简单用户验证系统的演示示例。在本节中，我们将建立一个应用，询问访客的名字，然后将其存储在安全cookie中，以便之后取出。后续的请求将认出回客，并展示给她一个定制的页面。你将学到login_url参数和tornado.web.authenticated装饰器的相关知识，这将消除在类似应用中经常会涉及到的一些头疼的问题。</p>
+<h2>6.3.1 示例：欢迎回来</h2>
+<p>在这个例子中，我们将只通过存储在安全cookie里的用户名标识一个人。当某人首次在某个浏览器（或cookie过期后）访问我们的页面时，我们展示一个登录表单页面。表单作为到LoginHandler路由的POST请求被提交。post方法的主体调用set_secure_cookie()来存储username请求参数中提交的值。</p>
+<p>代码清单6-2中的Tornado应用展示了我们本节要讨论的验证函数。LoginHandler类渲染登录表单并设置cookie，而LogoutHandler类删除cookie。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b69677098001" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单6-2 验证访客：cookies.py</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">import tornado.httpserver
+import tornado.ioloop
+import tornado.web
+import tornado.options
+import os.path
+
+from tornado.options import define, options
+define("port", default=8000, help="run on the given port", type=int)
+
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("username")
+
+class LoginHandler(BaseHandler):
+    def get(self):
+        self.render('login.html')
+
+    def post(self):
+        self.set_secure_cookie("username", self.get_argument("username"))
+        self.redirect("/")
+
+class WelcomeHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render('index.html', user=self.current_user)
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+    if (self.get_argument("logout", None)):
+        self.clear_cookie("username")
+        self.redirect("/")
+
+if __name__ == "__main__":
+    tornado.options.parse_command_line()
+
+    settings = {
+        "template_path": os.path.join(os.path.dirname(__file__), "templates"),
+        "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+        "xsrf_cookies": True,
+        "login_url": "/login"
+    }
+
+    application = tornado.web.Application([
+        (r'/', WelcomeHandler),
+        (r'/login', LoginHandler),
+        (r'/logout', LogoutHandler)
+    ], **settings)
+
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(options.port)
+    tornado.ioloop.IOLoop.instance().start()</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-8">8</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-10">10</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-12">12</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-14">14</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-16">16</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-18">18</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-20">20</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-22">22</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-24">24</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-26">26</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-28">28</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-29">29</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-30">30</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-31">31</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-32">32</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-33">33</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-34">34</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-35">35</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-36">36</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-37">37</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-38">38</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-39">39</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-40">40</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-41">41</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-42">42</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-43">43</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-44">44</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-45">45</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-46">46</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-47">47</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-48">48</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-49">49</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b69677098001-50">50</div><div class="crayon-num" data-line="crayon-57ee2f8562b69677098001-51">51</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b69677098001-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">httpserver</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-2"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">ioloop</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-3"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">web</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-4"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">options</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-5"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-k ">os.path</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-6">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-7"><span class="crayon-st">from</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-e">options </span><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-v">define</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">options</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-8"><span class="crayon-e">define</span><span class="crayon-sy">(</span><span class="crayon-s">"port"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">default</span><span class="crayon-o">=</span><span class="crayon-cn">8000</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">help</span><span class="crayon-o">=</span><span class="crayon-s">"run on the given port"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">type</span><span class="crayon-o">=</span><span class="crayon-k ">int</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-9">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-10"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">BaseHandler</span><span class="crayon-sy">(</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-v">RequestHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get_current_user</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">get_secure_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"username"</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-13">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-14"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">LoginHandler</span><span class="crayon-sy">(</span><span class="crayon-v">BaseHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-15"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-16"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">render</span><span class="crayon-sy">(</span><span class="crayon-s">'login.html'</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-17">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">post</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-19"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">set_secure_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"username"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">get_argument</span><span class="crayon-sy">(</span><span class="crayon-s">"username"</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-20"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">redirect</span><span class="crayon-sy">(</span><span class="crayon-s">"/"</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-21">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-22"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">WelcomeHandler</span><span class="crayon-sy">(</span><span class="crayon-v">BaseHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-23"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">@</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">authenticated</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-24"><span class="crayon-e">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-25"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">render</span><span class="crayon-sy">(</span><span class="crayon-s">'index.html'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">user</span><span class="crayon-o">=</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-v">current_user</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-26">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-27"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">LogoutHandler</span><span class="crayon-sy">(</span><span class="crayon-v">BaseHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-28"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-29"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">get_argument</span><span class="crayon-sy">(</span><span class="crayon-s">"logout"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-t">None</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-30"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">clear_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"username"</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-31"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">redirect</span><span class="crayon-sy">(</span><span class="crayon-s">"/"</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-32">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-33"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-v">__name__</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">"__main__"</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-34"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">options</span><span class="crayon-sy">.</span><span class="crayon-e">parse_command_line</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-35">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-36"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">settings</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-37"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"template_path"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-k ">os.path</span><span class="crayon-sy">.</span><span class="crayon-e">join</span><span class="crayon-sy">(</span><span class="crayon-k ">os.path</span><span class="crayon-sy">.</span><span class="crayon-e">dirname</span><span class="crayon-sy">(</span><span class="crayon-v">__file__</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"templates"</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-38"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"cookie_secret"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-39"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"xsrf_cookies"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-t">True</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-40"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"login_url"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"/login"</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-41"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-42">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-43"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">application</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">Application</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-44"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">WelcomeHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-45"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/login'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">LoginHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-46"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/logout'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">LogoutHandler</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-47"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-o">*</span><span class="crayon-o">*</span><span class="crayon-v">settings</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-48">&nbsp;</div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-49"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">http_server</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">httpserver</span><span class="crayon-sy">.</span><span class="crayon-e">HTTPServer</span><span class="crayon-sy">(</span><span class="crayon-v">application</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b69677098001-50"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">http_server</span><span class="crayon-sy">.</span><span class="crayon-e">listen</span><span class="crayon-sy">(</span><span class="crayon-v">options</span><span class="crayon-sy">.</span><span class="crayon-v">port</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b69677098001-51"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">ioloop</span><span class="crayon-sy">.</span><span class="crayon-v">IOLoop</span><span class="crayon-sy">.</span><span class="crayon-e">instance</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">start</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0138 seconds] -->
+<p> </p>
+<p>代码清单6-3和6-4是应用templates/目录下的文件。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b72541148386" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单6-3 登录表单：login.html</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">XHTML</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Please Log In&lt;/title&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;form action="/login" method="POST"&gt;
+            {% raw xsrf_form_html() %}
+            Username: &lt;input type="text" name="username" /&gt;
+            &lt;input type="submit" value="Log In" /&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-8">8</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-10">10</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b72541148386-12">12</div><div class="crayon-num" data-line="crayon-57ee2f8562b72541148386-13">13</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b72541148386-1"><span class="crayon-r ">&lt;html&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-2"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;head&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-3"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;title&gt;</span><span class="crayon-i ">Please Log In</span><span class="crayon-r ">&lt;/title&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-4"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;/head&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-6"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;body&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-7"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;form </span><span class="crayon-e ">action</span><span class="crayon-o">=</span><span class="crayon-s ">"/login"</span><span class="crayon-h"> </span><span class="crayon-e ">method</span><span class="crayon-o">=</span><span class="crayon-s ">"POST"</span><span class="crayon-r ">&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-8"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{% raw xsrf_form_html() %}</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-9"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username: </span><span class="crayon-r ">&lt;input </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s ">"text"</span><span class="crayon-h"> </span><span class="crayon-e ">name</span><span class="crayon-o">=</span><span class="crayon-s ">"username"</span><span class="crayon-r "> /&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-10"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;input </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s ">"submit"</span><span class="crayon-h"> </span><span class="crayon-e ">value</span><span class="crayon-o">=</span><span class="crayon-s ">"Log In"</span><span class="crayon-r "> /&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-11"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;/form&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b72541148386-12"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;/body&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b72541148386-13"><span class="crayon-r ">&lt;/html&gt;</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0019 seconds] -->
+<p> </p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b79880536550" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title">代码清单6-4 欢迎回客：index.html</span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">XHTML</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Welcome Back!&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Welcome back, {{ user }}&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b79880536550-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b79880536550-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b79880536550-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b79880536550-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b79880536550-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b79880536550-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b79880536550-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b79880536550-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b79880536550-1"><span class="crayon-r ">&lt;html&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b79880536550-2"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;head&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b79880536550-3"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;title&gt;</span><span class="crayon-i ">Welcome Back!</span><span class="crayon-r ">&lt;/title&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b79880536550-4"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;/head&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b79880536550-5"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;body&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b79880536550-6"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;h1&gt;</span><span class="crayon-i ">Welcome back, {{ user }}</span><span class="crayon-r ">&lt;/h1&gt;</span></div><div class="crayon-line" id="crayon-57ee2f8562b79880536550-7"><span class="crayon-i ">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r ">&lt;/body&gt;</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b79880536550-8"><span class="crayon-r ">&lt;/html&gt;</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0010 seconds] -->
+<p> </p>
+<h2>6.3.2 authenticated装饰器</h2>
+<p>为了使用Tornado的认证功能，我们需要对登录用户标记具体的处理函数。我们可以使用@tornado.web.authenticated装饰器完成它。当我们使用这个装饰器包裹一个处理方法时，Tornado将确保这个方法的主体只有在合法的用户被发现时才会调用。让我们看看例子中的WelcomeHandler吧，这个类只对已登录用户渲染index.html模板。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b85960526533" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">class WelcomeHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render('index.html', user=self.current_user)</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b85960526533-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b85960526533-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b85960526533-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b85960526533-4">4</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b85960526533-1"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">WelcomeHandler</span><span class="crayon-sy">(</span><span class="crayon-v">BaseHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b85960526533-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">@</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">authenticated</span></div><div class="crayon-line" id="crayon-57ee2f8562b85960526533-3"><span class="crayon-e">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b85960526533-4"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">render</span><span class="crayon-sy">(</span><span class="crayon-s">'index.html'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-k ">user</span><span class="crayon-o">=</span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-v">current_user</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0018 seconds] -->
+<p> </p>
+<p>在get方法被调用之前，authenticated装饰器确保current_usr属性有值。（我们将简短的讨论这个属性。）如果current_user值为假（None、False、0、””），任何GET或HEAD请求都将把访客重定向到应用设置中login_url指定的URL。此外，非法用户的POST请求将返回一个带有403（Forbidden）状态的HTTP响应。</p>
+<p>如果发现了一个合法的用户，Tornado将如期调用处理方法。为了实现完整功能，authenticated装饰器依赖于current_user属性和login_url设置，我们将在下面看到具体讲解。</p>
+<h3>6.3.2.1 current_user属性</h3>
+<p>请求处理类有一个current_user属性（同样也在处理程序渲染的任何模板中可用）可以用来存储为当前请求进行用户验证的标识。其默认值为None。为了authenticated装饰器能够成功标识一个已认证用户，你必须覆写请求处理程序中默认的get_current_user()方法来返回当前用户。</p>
+<p>实际的实现由你决定，不过在这个例子中，我们只是从安全cookie中取出访客的姓名。很明显，你希望使用一个更加鲁棒的技术，但是出于演示的目的，我们将使用下面的方法：</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b8d882370073" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("username")</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b8d882370073-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b8d882370073-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b8d882370073-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b8d882370073-1"><span class="crayon-t">class</span><span class="crayon-h"> </span><span class="crayon-e">BaseHandler</span><span class="crayon-sy">(</span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-v">RequestHandler</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b8d882370073-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-r">def</span><span class="crayon-h"> </span><span class="crayon-e">get_current_user</span><span class="crayon-sy">(</span><span class="crayon-r">self</span><span class="crayon-sy">)</span><span class="crayon-o">:</span></div><div class="crayon-line" id="crayon-57ee2f8562b8d882370073-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-r">self</span><span class="crayon-sy">.</span><span class="crayon-e">get_secure_cookie</span><span class="crayon-sy">(</span><span class="crayon-s">"username"</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0015 seconds] -->
+<p> </p>
+<p>尽管这里讨论的例子并没有在存储和取出用户密码或其他凭证上有所深入，但本章中讨论的技术可以以最小的额外努力来扩展到查询数据库中的认证。</p>
+<h3>6.3.2.2 login_url设置</h3>
+<p>让我们简单看看应用的构造函数。记住这里我们传递了一个新的设置给应用：login_url是应用登录表单的地址。如果get_current_user方法返回了一个假值，带有authenticated装饰器的处理程序将重定向浏览器的URL以便登录。</p>
+<p></p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57ee2f8562b94191556031" class="crayon-syntax crayon-theme-son-of-obsidian crayon-font-monaco crayon-os-mac print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">settings = {
+    "template_path": os.path.join(os.path.dirname(__file__), "templates"),
+    "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
+    "xsrf_cookies": True,
+    "login_url": "/login"
+}
+application = tornado.web.Application([
+    (r'/', WelcomeHandler),
+    (r'/login', LoginHandler),
+    (r'/logout', LogoutHandler)
+], **settings)</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b94191556031-2">2</div><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b94191556031-4">4</div><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b94191556031-6">6</div><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b94191556031-8">8</div><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57ee2f8562b94191556031-10">10</div><div class="crayon-num" data-line="crayon-57ee2f8562b94191556031-11">11</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57ee2f8562b94191556031-1"><span class="crayon-v">settings</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b94191556031-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"template_path"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-k ">os.path</span><span class="crayon-sy">.</span><span class="crayon-e">join</span><span class="crayon-sy">(</span><span class="crayon-k ">os.path</span><span class="crayon-sy">.</span><span class="crayon-e">dirname</span><span class="crayon-sy">(</span><span class="crayon-v">__file__</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"templates"</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b94191556031-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"cookie_secret"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b94191556031-4"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"xsrf_cookies"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-t">True</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b94191556031-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-s">"login_url"</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-s">"/login"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b94191556031-6"><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-57ee2f8562b94191556031-7"><span class="crayon-v">application</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">tornado</span><span class="crayon-sy">.</span><span class="crayon-v">web</span><span class="crayon-sy">.</span><span class="crayon-e">Application</span><span class="crayon-sy">(</span><span class="crayon-sy">[</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b94191556031-8"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">WelcomeHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line" id="crayon-57ee2f8562b94191556031-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/login'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">LoginHandler</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span></div><div class="crayon-line crayon-striped-line" id="crayon-57ee2f8562b94191556031-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">(</span><span class="crayon-i">r</span><span class="crayon-s">'/logout'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">LogoutHandler</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57ee2f8562b94191556031-11"><span class="crayon-sy">]</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-o">*</span><span class="crayon-o">*</span><span class="crayon-v">settings</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0036 seconds] -->
+<p> </p>
+<p>当Tornado构建重定向URL时，它还会给查询字符串添加一个next参数，其中包含了发起重定向到登录页面的URL资源地址。你可以使用像self.redirect(self.get_argument(‘next’, ‘/’))这样的行来重定向登录后用户回到的页面。</p>
+<h1>6.4 总结</h1>
+<p>我们在本章中看到了两种帮助你的Tornado应用安全的技术，以及一个如何使用@tornado.web.authenticated实现用户认证的例子。在第七章，我们将看到在那些像Facebook和Twitter一样需要外部Web服务认证的应用中如何扩展我们这里谈论的概念。</p>
+<p>========================================================<br>
+<strong>各章链接：</strong><br>
+<a href="http://www.pythoner.com/273.html" title="《Introduction to Tornado》中文翻译计划——第一章：引言" target="_blank">《Introduction to Tornado》中文翻译计划——第一章：引言</a><br>
+<a href="http://www.pythoner.com/274.html" title="《Introduction to Tornado》中文翻译计划——第二章：表单和模板" target="_blank">《Introduction to Tornado》中文翻译计划——第二章：表单和模板</a><br>
+<a href="http://www.pythoner.com/282.html" title="《Introduction to Tornado》中文翻译计划——第三章：模板扩展" target="_blank">《Introduction to Tornado》中文翻译计划——第三章：模板扩展</a><br>
+<a href="http://www.pythoner.com/283.html" title="《Introduction to Tornado》中文翻译计划——第四章：数据库" target="_blank">《Introduction to Tornado》中文翻译计划——第四章：数据库</a><br>
+<a href="http://www.pythoner.com/294.html" title="《Introduction to Tornado》中文翻译计划——第五章：异步Web服务" target="_blank">《Introduction to Tornado》中文翻译计划——第五章：异步Web服务</a><br>
+<a href="http://www.pythoner.com/295.html" title="《Introduction to Tornado》中文翻译计划——第六章：编写安全应用" target="_blank">《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</a><br>
+<a href="http://www.pythoner.com/302.html" title="《Introduction to Tornado》中文翻译计划——第七章：外部服务认证" target="_blank">《Introduction to Tornado》中文翻译计划——第七章：外部服务认证</a><br>
+<a href="http://www.pythoner.com/303.html" title="《Introduction to Tornado》中文翻译计划——第八章：部署Tornado" target="_blank">《Introduction to Tornado》中文翻译计划——第八章：部署Tornado</a>
+</p><div class="post_copyright">
+<p>本文内容遵从<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC3.0版权协议</a>，转载请注明：转自<a href="http://www.pythoner.com/">Pythoner</a></p>
+<p>本文链接地址：<a href="http://www.pythoner.com/295.html">《Introduction to Tornado》中文翻译计划——第六章：编写安全应用</a></p>
+</div>
+
+<div class="wp_rp_wrap  wp_rp_plain" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-274" data-post-type="none"><a href="http://www.pythoner.com/274.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第二章：表单和模板</a></li><li data-position="1" data-poid="in-273" data-post-type="none"><a href="http://www.pythoner.com/273.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第一章：引言</a></li><li data-position="2" data-poid="in-294" data-post-type="none"><a href="http://www.pythoner.com/294.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第五章：异步Web服务</a></li><li data-position="3" data-poid="in-302" data-post-type="none"><a href="http://www.pythoner.com/302.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第七章：外部服务认证</a></li><li data-position="4" data-poid="in-282" data-post-type="none"><a href="http://www.pythoner.com/282.html" class="wp_rp_title">《Introduction to Tornado》中文翻译计划——第三章：模板扩展</a></li></ul><div class="wp_rp_footer"><a class="wp_rp_backlink" target="_blank" href="http://www.zemanta.com/?wp-related-posts" rel="nofollow">Zemanta</a></div></div></div>
+            <div class="post_baidushare_down clearfix">
+       <!-- Baidu Button BEGIN -->
+       <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+       <a class="bds_tsina" title="分享到新浪微博" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_renren" title="分享到人人网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_tqq" title="分享到腾讯微博" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_qzone" title="分享到QQ空间" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_douban" title="分享到豆瓣网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_diandian" title="分享到点点网" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_twi" title="分享到Twitter" href="http://www.pythoner.com/295.html#"></a>
+       <a class="bds_fbook" title="分享到Facebook" href="http://www.pythoner.com/295.html#"></a>
+       <span class="bds_more"></span>
+       <a class="shareCount" href="http://www.pythoner.com/295.html#" title="累计分享1次">1</a>
+       </div>
+       <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1482744"></script>
+       
+       <script type="text/javascript">
+       document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+       </script>
+       <!-- Baidu Button END -->
+       </div>
+     </div><!-- END .post_content -->
+    </div>
+    <div class="meta">
+          <ul>
+            <li class="post_date clearfix">
+       <span class="date">04</span>
+       <span class="month">Aug</span>
+       <span class="year">2013</span>
+      </li>
+            <li class="post_author"><a href="http://www.pythoner.com/author/alioth310" title="由alioth310发布" rel="author">alioth310</a></li>      <li class="post_category"><a href="http://www.pythoner.com/category/programming-language/python/tornado" rel="category tag">Tornado</a></li>      <li class="post_tag"><a href="http://www.pythoner.com/tag/github" rel="tag">GitHub</a>, <a href="http://www.pythoner.com/tag/python" rel="tag">python</a>, <a href="http://www.pythoner.com/tag/tornado" rel="tag">Tornado</a>, <a href="http://www.pythoner.com/tag/%e7%bf%bb%e8%af%91" rel="tag">翻译</a></li>      <li class="post_views"> 2,035 次围观</li>      <li class="post_comment"><a href="http://www.pythoner.com/295.html#respond">发表评论</a></li>            <li class="post_qrcode"><img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/chart" title="获取本文二维码：《Introduction to Tornado》中文翻译计划——第六章：编写安全应用"></li>
+     </ul>
+         </div>
+   </div><!-- END .post_wrap -->
+
+   
+      <div id="comments_wrapper">
+    
+
+
+
+<div id="comment_header" class="clearfix">
+
+ <ul id="comment_header_left">
+  <li id="add_comment"><a href="http://www.pythoner.com/295.html#respond">发表评论</a></li>
+  <li id="comment_feed"><a href="http://www.pythoner.com/comments/feed" title="RSS订阅评论">RSS订阅评论</a></li>
+ </ul>
+
+ <ul id="comment_header_right">
+   <li id="trackback_switch"><a href="javascript:void(0);">Trackback ( 0 )</a></li>
+   <li id="comment_switch" class="comment_switch_active"><a href="javascript:void(0);">评论 ( 0 )</a></li>
+ </ul>
+
+
+
+</div><!-- END #comment_header -->
+
+<div id="comments">
+
+ <div id="comment_area">
+  <!-- start commnet -->
+  <ol class="commentlist">
+	    <li class="comment even_comment">
+     <div class="comment-content"><p>暂无评论</p></div>
+    </li>
+	  </ol>
+  <!-- comments END -->
+
+  
+ </div><!-- #comment-list END -->
+
+
+ <div id="trackback_area">
+ <!-- start trackback -->
+ 
+  <div id="trackback_url_wrapper">
+   <label for="trackback_url">TrackBack 地址</label>
+   <input type="text" name="trackback_url" id="trackback_url" size="60" value="http://www.pythoner.com/295.html/trackback" readonly="readonly" onfocus="this.select()">
+  </div>
+
+  <ol class="commentlist">
+      <li class="comment"><div class="comment-content"><p>暂无 Trackback</p></div></li>
+     </ol>
+
+  <!-- trackback end -->
+ </div><!-- #trackbacklist END -->
+
+ 
+
+
+ 
+ <fieldset class="comment_form_wrapper" id="respond">
+
+    <div id="cancel_comment_reply"><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.pythoner.com/295.html#respond" style="display:none;">点击这里取消回复。</a></div>
+  
+  <form action="http://www.pythoner.com/wp-comments-post.php" method="post" id="commentform">
+
+   
+   <div id="guest_info">
+    <div id="guest_name"><label for="author"><span>昵称</span>( 必须 )</label><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required="true"></div>
+    <div id="guest_email"><label for="email"><span>E-MAIL</span>( 必须 ) - 不会公开 -</label><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required="true"></div>
+    <div id="guest_url"><label for="url"><span>网址</span></label><input type="text" name="url" id="url" value="" size="22" tabindex="3"></div>
+   </div>
+
+   
+   <div id="comment_textarea">
+    <textarea name="comment" id="comment" cols="50" rows="10" tabindex="4" onkeydown="if(event.ctrlKey&amp;&amp;event.keyCode==13){document.getElementById(&#39;submit_comment&#39;).click();return false};"></textarea>
+   </div>
+
+  <div id="custom_smilies">
+	<!-- Custom Smilies - Version 2.9.2 -->
+	<style type="text/css">
+	img.wp-smiley-select {cursor: pointer;}
+	</style>
+    <script type="text/javascript">
+    function grin(tag) {
+    	if (typeof tinyMCE != 'undefined') {
+    		grin_tinymcecomments(tag);
+    	} else {
+    		grin_plain(tag);
+    	}
+    }
+    function grin_tinymcecomments(tag) {
+    	tinyMCE.execCommand('mceInsertContent', false, ' ' + tag + ' ');
+    }
+    
+    function grin_plain(tag) {
+    	var myField;
+    	var myCommentTextarea = "comment";
+    	tag = ' ' + tag + ' ';
+        if (document.getElementById(myCommentTextarea) && document.getElementById(myCommentTextarea).type == 'textarea') {
+    		myField = document.getElementById(myCommentTextarea);
+    	} else {
+    		return false;
+    	}
+    	if (document.selection) {
+    		myField.focus();
+    		sel = document.selection.createRange();
+    		sel.text = tag;
+    		myField.focus();
+    	}
+    	else if (myField.selectionStart || myField.selectionStart == '0') {
+    		var startPos = myField.selectionStart;
+    		var endPos = myField.selectionEnd;
+    		var cursorPos = endPos;
+    		myField.value = myField.value.substring(0, startPos)
+    					  + tag
+    					  + myField.value.substring(endPos, myField.value.length);
+    		cursorPos += tag.length;
+    		myField.focus();
+    		myField.selectionStart = cursorPos;
+    		myField.selectionEnd = cursorPos;
+    	}
+    	else {
+    		myField.value += tag;
+    		myField.focus();
+    	}
+    }
+    
+    function moreSmilies() {
+    	document.getElementById('wp-smiley-more').style.display = 'inline';
+    	document.getElementById('wp-smiley-toggle').innerHTML = '<a href="javascript:lessSmilies()">&laquo;&nbsp;less</a></span>';
+    }
+    
+    function lessSmilies() {
+    	document.getElementById('wp-smiley-more').style.display = 'none';
+    	document.getElementById('wp-smiley-toggle').innerHTML = '<a href="javascript:moreSmilies()">more&nbsp;&raquo;</a>';
+    }
+    </script>
+<img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/good.gif" alt="[em_zan]" onclick="grin(&quot;[em_zan]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/yali.gif" alt="[em_yali]" onclick="grin(&quot;[em_yali]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/xiao.gif" alt="[em_xiao]" onclick="grin(&quot;[em_xiao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/xhj.gif" alt="[em_xhj]" onclick="grin(&quot;[em_xhj]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/tucao.gif" alt="[em_tucao]" onclick="grin(&quot;[em_tucao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/tu.gif" alt="[em_tu]" onclick="grin(&quot;[em_tu]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/tiaopi.gif" alt="[em_tiaopi]" onclick="grin(&quot;[em_tiaopi]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/shaoxiang.gif" alt="[em_sx]" onclick="grin(&quot;[em_sx]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/shudaizi.gif" alt="[em_sdz]" onclick="grin(&quot;[em_sdz]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/shangbuqi.gif" alt="[em_sbq]" onclick="grin(&quot;[em_sbq]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/mobai.gif" alt="[em_mobai]" onclick="grin(&quot;[em_mobai]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/kouzhao.gif" alt="[em_kzh]" onclick="grin(&quot;[em_kzh]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/ku.gif" alt="[em_ku]" onclick="grin(&quot;[em_ku]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/koushui.gif" alt="[em_ksh]" onclick="grin(&quot;[em_ksh]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/keai.gif" alt="[em_keai]" onclick="grin(&quot;[em_keai]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jiong.gif" alt="[em_jiong]" onclick="grin(&quot;[em_jiong]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jing.gif" alt="[em_jing]" onclick="grin(&quot;[em_jing]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/huaixiao.gif" alt="[em_hx]" onclick="grin(&quot;[em_hx]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/han.gif" alt="[em_han]" onclick="grin(&quot;[em_han]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/ganga.gif" alt="[em_ganga]" onclick="grin(&quot;[em_ganga]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/daxiao.gif" alt="[em_daxiao]" onclick="grin(&quot;[em_daxiao]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/cool.gif" alt="[em_cool]" onclick="grin(&quot;[em_cool]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/chi.gif" alt="[em_chi]" onclick="grin(&quot;[em_chi]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/bu.gif" alt="[em_bu]" onclick="grin(&quot;[em_bu]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/bizui.gif" alt="[em_bizui]" onclick="grin(&quot;[em_bizui]&quot;)" class="wp-smiley-select"> <img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/ai.gif" alt="[em_ai]" onclick="grin(&quot;[em_ai]&quot;)" class="wp-smiley-select"> </div>
+
+   <div id="submit_comment_wrapper">
+    <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="d0b1fd9e7a"></p><p style="display: none;"></p>    <input name="submit" type="submit" id="submit_comment" tabindex="5" value="发表评论/Ctrl+Enter" title="发表评论/Ctrl+Enter" alt="发表评论/Ctrl+Enter">
+   </div>
+   <div id="input_hidden_field">
+        <input type="hidden" name="comment_post_ID" value="295" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+       </div>
+
+  <input type="hidden" id="ak_js" name="ak_js" value="1475227527438"></form>
+
+ </fieldset><!-- #comment-form-area END -->
+
+</div><!-- #comment end -->   </div>
+   
+      <div id="previous_next_post_single">
+    <div class="clearfix">
+     <p id="previous_post"><a href="http://www.pythoner.com/294.html" rel="prev">《Introduction to Tornado》中文翻译计划——第五章：异步Web服务</a></p>     <p id="next_post"><a href="http://www.pythoner.com/302.html" rel="next">《Introduction to Tornado》中文翻译计划——第七章：外部服务认证</a></p>    </div>
+   </div>
+   
+
+  </div><!-- END #left_col -->
+
+  <div id="container" style="height: 9503px;"></div>
+
+    <div id="right_col">
+   
+<div id="info_area">
+ <div class="side_box clearfix" id="info_content">
+    <h3 class="side_title">扫描二维码访问本站</h3>
+    <div class="desc">
+   <p><img src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/pythoner_qrcode_150.png" alt="扫描二维码访问本站"></p>
+  </div>
+ </div>
+</div>
+
+<div class="side_box clearfix" id="side_meta_content">
+
+  <ul id="social_link" class="clearfix">
+    <li class="rss_button"><a class="target_blank" href="http://www.pythoner.com/feed" target="_blank">rss</a></li>
+          <li class="weibo_button"><a class="target_blank" href="http://weibo.com/alioth310" target="_blank">weibo</a></li>
+         </ul>
+ 
+  <div id="search_area">
+    <form method="get" id="searchform" action="http://www.pythoner.com/">
+   <div><input id="search_button" class="rollover" type="image" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/search_button.gif" alt="搜索一下" title="搜索一下"></div>
+   <div><input id="search_input" type="text" value="搜索一下" name="s" onfocus="if (this.value == &#39;搜索一下&#39;) this.value = &#39;&#39;;" onblur="if (this.value == &#39;&#39;) this.value = &#39;搜索一下&#39;;"></div>
+  </form>
+   </div>
+ 
+</div>
+
+
+<div id="side_top">
+
+ <div class="side_box widget_text" id="text-3">
+<h3 class="side_title">支持我</h3>
+			<div class="textwidget"><ul>
+  <li><a href="https://www.digitalocean.com/?refcode=32ac9c46cd67">DigitalOcean邀请注册（送10刀）</a></li>
+  <li>域名出售：
+    <ul>
+      <li>shangpolu.com（上坡路）</li>
+      <li>pythonsky.com</li>
+    </ul>
+  </li> 
+</ul></div>
+		</div>
+<div class="side_box widget_views" id="views-2">
+<h3 class="side_title">热门文章</h3>
+<ul>
+<li><a href="http://www.pythoner.com/83.html" title="Windows下PyQt4的安装">Windows下PyQt4的安装</a></li><li><a href="http://www.pythoner.com/106.html" title="Windows下Eclipse+PyDev安装Python开发环境">Windows下Eclipse+PyDev安装Python开发环境</a></li><li><a href="http://www.pythoner.com/46.html" title="Python函数式编程——map()、reduce()">Python函数式编程——map()、reduce()</a></li><li><a href="http://www.pythoner.com/89.html" title="使用eric创建一个PyQt项目">使用eric创建一个PyQt项目</a></li><li><a href="http://www.pythoner.com/205.html" title="Python标准库——collections模块的Counter类">Python标准库——collections模块的Counter类</a></li><li><a href="http://www.pythoner.com/111.html" title="使用Py2exe将PyQt程序打包为exe文件">使用Py2exe将PyQt程序打包为exe文件</a></li><li><a href="http://www.pythoner.com/13.html" title="Python中如何实现两个字典合并">Python中如何实现两个字典合并</a></li><li><a href="http://www.pythoner.com/273.html" title="《Introduction to Tornado》中文翻译计划——第一章：引言">《Introduction to Tornado》中文翻译计划——第一章：引言</a></li><li><a href="http://www.pythoner.com/148.html" title="【Python教程】雨痕 的《Python学习笔记》（附脑图）">【Python教程】雨痕 的《Python学习笔记》（附脑图）</a></li><li><a href="http://www.pythoner.com/238.html" title="《机器学习实战》读书笔记">《机器学习实战》读书笔记</a></li></ul>
+</div>
+		<div class="side_box widget_recent_entries" id="recent-posts-2">
+		<h3 class="side_title">最新文章</h3>
+		<ul>
+					<li>
+				<a href="http://www.pythoner.com/474.html">《Python核心编程（第3版）》勘误</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/416.html">【漏洞预警】Tornado某缺陷可能造成文件读取漏洞 （updated @ 2015-03-04）</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/414.html">使用Python下载邮件（pop/imap）</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/386.html">《Web之困》读书笔记</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/364.html">Tornado 4.0发布</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/357.html">Python设置终端显示颜色、粗体、下划线等效果</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/356.html">Python天坑系列（一）：while 1比while True更快？</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/345.html">Python socket模拟TCP通讯</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/337.html">《思考的乐趣》读书笔记</a>
+						</li>
+					<li>
+				<a href="http://www.pythoner.com/329.html">《代码的未来》读书笔记</a>
+						</li>
+				</ul>
+		</div>
+		<div class="side_box widget_recent_comments" id="recent-comments-2">
+<h3 class="side_title">最新评论</h3>
+<ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Nicoder</span>发表在《<a href="http://www.pythoner.com/205.html#comment-43572">Python标准库——collections模块的Counter类</a>》</li><li class="recentcomments"><span class="comment-author-link">analgestic</span>发表在《<a href="http://www.pythoner.com/89.html#comment-43471">使用eric创建一个PyQt项目</a>》</li><li class="recentcomments"><span class="comment-author-link">dmdoge</span>发表在《<a href="http://www.pythoner.com/46.html#comment-43467">Python函数式编程——map()、reduce()</a>》</li><li class="recentcomments"><span class="comment-author-link">alioth310</span>发表在《<a href="http://www.pythoner.com/196.html#comment-43430">配置SecureCRT连接本地虚拟机中的Linux系统</a>》</li><li class="recentcomments"><span class="comment-author-link">cheryH</span>发表在《<a href="http://www.pythoner.com/196.html#comment-43427">配置SecureCRT连接本地虚拟机中的Linux系统</a>》</li></ul></div>
+<div class="side_box widget_tag_cloud" id="tag_cloud-2">
+<h3 class="side_title">标签云</h3>
+<div class="tagcloud"><a href="http://www.pythoner.com/tag/dict" class="tag-link-6 tag-link-position-1" title="2个话题" style="font-size: 9.8pt;">dict</a>
+<a href="http://www.pythoner.com/tag/discuz" class="tag-link-49 tag-link-position-2" title="2个话题" style="font-size: 9.8pt;">discuz</a>
+<a href="http://www.pythoner.com/tag/editplus" class="tag-link-73 tag-link-position-3" title="2个话题" style="font-size: 9.8pt;">EditPlus</a>
+<a href="http://www.pythoner.com/tag/eric" class="tag-link-59 tag-link-position-4" title="2个话题" style="font-size: 9.8pt;">eric</a>
+<a href="http://www.pythoner.com/tag/git" class="tag-link-53 tag-link-position-5" title="2个话题" style="font-size: 9.8pt;">git</a>
+<a href="http://www.pythoner.com/tag/github" class="tag-link-105 tag-link-position-6" title="9个话题" style="font-size: 15pt;">GitHub</a>
+<a href="http://www.pythoner.com/tag/ide" class="tag-link-60 tag-link-position-7" title="2个话题" style="font-size: 9.8pt;">ide</a>
+<a href="http://www.pythoner.com/tag/linux" class="tag-link-142 tag-link-position-8" title="4个话题" style="font-size: 12pt;">Linux</a>
+<a href="http://www.pythoner.com/tag/matplotlib" class="tag-link-87 tag-link-position-9" title="2个话题" style="font-size: 9.8pt;">matplotlib</a>
+<a href="http://www.pythoner.com/tag/mongodb" class="tag-link-147 tag-link-position-10" title="2个话题" style="font-size: 9.8pt;">MongoDB</a>
+<a href="http://www.pythoner.com/tag/mysql" class="tag-link-144 tag-link-position-11" title="3个话题" style="font-size: 11pt;">MySQL</a>
+<a href="http://www.pythoner.com/tag/nosql" class="tag-link-32 tag-link-position-12" title="2个话题" style="font-size: 9.8pt;">NoSQL</a>
+<a href="http://www.pythoner.com/tag/php" class="tag-link-14 tag-link-position-13" title="2个话题" style="font-size: 9.8pt;">php</a>
+<a href="http://www.pythoner.com/tag/pyqt" class="tag-link-57 tag-link-position-14" title="5个话题" style="font-size: 12.8pt;">PyQt</a>
+<a href="http://www.pythoner.com/tag/python" class="tag-link-138 tag-link-position-15" title="49个话题" style="font-size: 22pt;">python</a>
+<a href="http://www.pythoner.com/tag/pythonic" class="tag-link-5 tag-link-position-16" title="1个话题" style="font-size: 8pt;">pythonic</a>
+<a href="http://www.pythoner.com/tag/shell" class="tag-link-65 tag-link-position-17" title="4个话题" style="font-size: 12pt;">Shell</a>
+<a href="http://www.pythoner.com/tag/tornado" class="tag-link-146 tag-link-position-18" title="12个话题" style="font-size: 16.1pt;">Tornado</a>
+<a href="http://www.pythoner.com/tag/ubuntu" class="tag-link-83 tag-link-position-19" title="3个话题" style="font-size: 11pt;">Ubuntu</a>
+<a href="http://www.pythoner.com/tag/web" class="tag-link-104 tag-link-position-20" title="2个话题" style="font-size: 9.8pt;">Web</a>
+<a href="http://www.pythoner.com/tag/wordpress" class="tag-link-139 tag-link-position-21" title="4个话题" style="font-size: 12pt;">WordPress</a>
+<a href="http://www.pythoner.com/tag/%e4%b8%ad%e6%96%87%e4%b9%b1%e7%a0%81" class="tag-link-88 tag-link-position-22" title="2个话题" style="font-size: 9.8pt;">中文乱码</a>
+<a href="http://www.pythoner.com/tag/%e4%ba%ba%e4%ba%ba%e7%bd%91" class="tag-link-42 tag-link-position-23" title="2个话题" style="font-size: 9.8pt;">人人网</a>
+<a href="http://www.pythoner.com/tag/%e4%bb%a3%e7%a0%81" class="tag-link-43 tag-link-position-24" title="6个话题" style="font-size: 13.5pt;">代码</a>
+<a href="http://www.pythoner.com/tag/%e5%87%bd%e6%95%b0%e5%bc%8f%e7%bc%96%e7%a8%8b" class="tag-link-22 tag-link-position-25" title="4个话题" style="font-size: 12pt;">函数式编程</a>
+<a href="http://www.pythoner.com/tag/%e5%88%97%e8%a1%a8%e8%a7%a3%e6%9e%90" class="tag-link-27 tag-link-position-26" title="2个话题" style="font-size: 9.8pt;">列表解析</a>
+<a href="http://www.pythoner.com/tag/%e5%ae%89%e5%85%a8" class="tag-link-25 tag-link-position-27" title="3个话题" style="font-size: 11pt;">安全</a>
+<a href="http://www.pythoner.com/tag/%e5%ae%89%e8%a3%85" class="tag-link-58 tag-link-position-28" title="2个话题" style="font-size: 9.8pt;">安装</a>
+<a href="http://www.pythoner.com/tag/%e6%80%9d%e7%bb%b4%e5%af%bc%e5%9b%be" class="tag-link-12 tag-link-position-29" title="23个话题" style="font-size: 18.8pt;">思维导图</a>
+<a href="http://www.pythoner.com/tag/%e6%95%8f%e6%8d%b7%e5%bc%80%e5%8f%91" class="tag-link-35 tag-link-position-30" title="4个话题" style="font-size: 12pt;">敏捷开发</a>
+<a href="http://www.pythoner.com/tag/%e6%95%b0%e6%8d%ae%e5%8f%af%e8%a7%86%e5%8c%96" class="tag-link-46 tag-link-position-31" title="2个话题" style="font-size: 9.8pt;">数据可视化</a>
+<a href="http://www.pythoner.com/tag/%e6%95%b0%e6%8d%ae%e5%ba%93" class="tag-link-140 tag-link-position-32" title="3个话题" style="font-size: 11pt;">数据库</a>
+<a href="http://www.pythoner.com/tag/%e6%96%87%e4%bb%b6%e5%af%b9%e6%af%94" class="tag-link-71 tag-link-position-33" title="2个话题" style="font-size: 9.8pt;">文件对比</a>
+<a href="http://www.pythoner.com/tag/%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0" class="tag-link-77 tag-link-position-34" title="2个话题" style="font-size: 9.8pt;">机器学习</a>
+<a href="http://www.pythoner.com/tag/%e7%99%bb%e5%bd%95" class="tag-link-50 tag-link-position-35" title="2个话题" style="font-size: 9.8pt;">登录</a>
+<a href="http://www.pythoner.com/tag/%e7%ae%97%e6%b3%95" class="tag-link-143 tag-link-position-36" title="3个话题" style="font-size: 11pt;">算法</a>
+<a href="http://www.pythoner.com/tag/%e7%bf%bb%e8%af%91" class="tag-link-106 tag-link-position-37" title="8个话题" style="font-size: 14.5pt;">翻译</a>
+<a href="http://www.pythoner.com/tag/%e8%84%9a%e6%9c%ac" class="tag-link-66 tag-link-position-38" title="2个话题" style="font-size: 9.8pt;">脚本</a>
+<a href="http://www.pythoner.com/tag/%e8%87%aa%e5%8a%a8%e8%a1%a5%e5%85%a8" class="tag-link-74 tag-link-position-39" title="2个话题" style="font-size: 9.8pt;">自动补全</a>
+<a href="http://www.pythoner.com/tag/%e8%ae%ba%e5%9d%9b" class="tag-link-51 tag-link-position-40" title="2个话题" style="font-size: 9.8pt;">论坛</a>
+<a href="http://www.pythoner.com/tag/%e8%ae%be%e8%ae%a1" class="tag-link-114 tag-link-position-41" title="3个话题" style="font-size: 11pt;">设计</a>
+<a href="http://www.pythoner.com/tag/%e8%af%ad%e6%b3%95%e9%ab%98%e4%ba%ae" class="tag-link-75 tag-link-position-42" title="2个话题" style="font-size: 9.8pt;">语法高亮</a>
+<a href="http://www.pythoner.com/tag/%e8%af%bb%e4%b9%a6%e7%ac%94%e8%ae%b0" class="tag-link-11 tag-link-position-43" title="28个话题" style="font-size: 19.6pt;">读书笔记</a>
+<a href="http://www.pythoner.com/tag/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b" class="tag-link-36 tag-link-position-44" title="2个话题" style="font-size: 9.8pt;">软件工程</a>
+<a href="http://www.pythoner.com/tag/%e9%85%8d%e7%bd%ae%e7%ae%a1%e7%90%86" class="tag-link-54 tag-link-position-45" title="2个话题" style="font-size: 9.8pt;">配置管理</a></div>
+</div>
+<div class="side_box widget_archive" id="archives-2">
+<h3 class="side_title">文章归档</h3>
+		<ul>
+			<li><a href="http://www.pythoner.com/date/2016/06">2016年六月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2015/03">2015年三月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2015/02">2015年二月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/12">2014年十二月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/07">2014年七月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/06">2014年六月</a>&nbsp;(2)</li>
+	<li><a href="http://www.pythoner.com/date/2014/03">2014年三月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2014/01">2014年一月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/12">2013年十二月</a>&nbsp;(6)</li>
+	<li><a href="http://www.pythoner.com/date/2013/11">2013年十一月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/10">2013年十月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/09">2013年九月</a>&nbsp;(1)</li>
+	<li><a href="http://www.pythoner.com/date/2013/08">2013年八月</a>&nbsp;(5)</li>
+	<li><a href="http://www.pythoner.com/date/2013/07">2013年七月</a>&nbsp;(12)</li>
+	<li><a href="http://www.pythoner.com/date/2013/06">2013年六月</a>&nbsp;(3)</li>
+	<li><a href="http://www.pythoner.com/date/2013/05">2013年五月</a>&nbsp;(8)</li>
+	<li><a href="http://www.pythoner.com/date/2013/04">2013年四月</a>&nbsp;(3)</li>
+	<li><a href="http://www.pythoner.com/date/2013/03">2013年三月</a>&nbsp;(5)</li>
+	<li><a href="http://www.pythoner.com/date/2013/02">2013年二月</a>&nbsp;(13)</li>
+	<li><a href="http://www.pythoner.com/date/2013/01">2013年一月</a>&nbsp;(15)</li>
+	<li><a href="http://www.pythoner.com/date/2012/12">2012年十二月</a>&nbsp;(1)</li>
+		</ul>
+		</div>
+<div class="side_box widget_categories" id="categories-2">
+<h3 class="side_title">分类目录</h3>
+		<ul>
+	<li class="cat-item cat-item-13"><a href="http://www.pythoner.com/category/wordpress">WordPress</a> (4)
+</li>
+	<li class="cat-item cat-item-79"><a href="http://www.pythoner.com/category/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f">操作系统</a> (5)
+<ul class="children">
+	<li class="cat-item cat-item-64"><a href="http://www.pythoner.com/category/%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f/linux">Linux</a> (5)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-33"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93">数据库</a> (2)
+<ul class="children">
+	<li class="cat-item cat-item-102"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93/mongodb">MongoDB</a> (1)
+</li>
+	<li class="cat-item cat-item-84"><a href="http://www.pythoner.com/category/%e6%95%b0%e6%8d%ae%e5%ba%93/mysql">MySQL</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-107"><a href="http://www.pythoner.com/category/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c">用户体验</a> (1)
+</li>
+	<li class="cat-item cat-item-78"><a href="http://www.pythoner.com/category/%e7%ae%97%e6%b3%95">算法</a> (1)
+</li>
+	<li class="cat-item cat-item-2"><a href="http://www.pythoner.com/category/programming-language">编程语言</a> (43)
+<ul class="children">
+	<li class="cat-item cat-item-56"><a href="http://www.pythoner.com/category/programming-language/android">Android</a> (1)
+</li>
+	<li class="cat-item cat-item-90"><a href="http://www.pythoner.com/category/programming-language/latex">LaTeX</a> (1)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.pythoner.com/category/programming-language/python">python</a> (40)
+	<ul class="children">
+	<li class="cat-item cat-item-101"><a href="http://www.pythoner.com/category/programming-language/python/tornado">Tornado</a> (11)
+</li>
+	</ul>
+</li>
+	<li class="cat-item cat-item-72"><a href="http://www.pythoner.com/category/programming-language/shell-programming-language">shell</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.pythoner.com/category/note">读书笔记</a> (28)
+</li>
+		</ul>
+</div>
+<div class="side_box widget_links" id="linkcat-0">
+<h3 class="side_title">书签</h3>
+
+	<ul class="xoxo blogroll">
+<li><a href="http://blog.coocla.org/" target="_blank">Coocla</a></li>
+<li><a href="http://www.findspace.name/">FindSpace</a></li>
+
+	</ul>
+</div>
+
+</div>
+<div id="side_middle" class="clearfix">
+ <div id="side_left">
+   </div>
+ <div id="side_right">
+   </div>
+</div>
+<div id="side_bottom">
+ <div class="side_box widget_meta" id="meta-2">
+<h3 class="side_title">功能</h3>
+			<ul>
+						<li><a href="http://www.pythoner.com/wp-login.php">登录</a></li>
+			<li><a href="http://www.pythoner.com/feed">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://www.pythoner.com/comments/feed">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li>			</ul>
+			</div>
+</div>
+
+  </div>
+  
+  <div id="footer">
+   <ul id="copyright">
+    <li>版权所有 ©&nbsp; <a href="http://www.pythoner.com/">Pythoner</a></li>
+    <li>主题由 <a class="target_blank" href="http://www.mono-lab.net/" target="_blank">mono-lab</a> 设计 <a class="target_blank" href="http://pythoner.com/" target="_blank">你像从前一样</a> 修改</li>
+    <li>由 <a class="target_blank" href="http://wordpress.org/" target="_blank">WordPress</a> 强力驱动</li>
+    <li class="last"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253420103'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s6.cnzz.com/z_stat.php%3Fid%3D1253420103' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1253420103"><a href="http://www.cnzz.com/stat/website.php?web_id=1253420103" target="_blank" title="站长统计">站长统计</a></span><script src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/z_stat.php" type="text/javascript"></script><script src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/core.php" charset="utf-8" type="text/javascript"></script></li>
+   </ul>
+  </div>
+
+ </div><!-- END #main_content -->
+
+
+  <p id="return_top" style="display: none;"><a href="http://www.pythoner.com/295.html#header">return top</a></p>
+ 
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/form.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"http:\/\/www.pythoner.com\/wp-admin\/admin-ajax.php","post_id":"295"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/postviews-cache.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/jquery.sonar.min.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/lazy-load.js"></script>
+<script type="text/javascript" src="./《Introduction to Tornado》中文翻译计划——第六章：编写安全应用 _ Pythoner_files/wp-embed.min.js"></script>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=2&amp;pos=right&amp;uid=1482744"></script>
+
+<script type="text/javascript">
+var bds_config={"bdTop":200};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script>
+<!-- Baidu Button END -->
+
+
+
+<!-- Dynamic page generated in 0.711 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2016-09-30 17:25:25 -->
+
+<!-- super cache --></body></html>
